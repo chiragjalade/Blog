@@ -52,7 +52,7 @@ export function HeroCarousel() {
   const [api, setApi] = React.useState<CarouselApi | null>(null)
   const [current, setCurrent] = React.useState(0)
   const [activeIndex, setActiveIndex] = React.useState(0)
-  const { isLoading } = useLoading()
+  const { isLoading, preloaderFinished } = useLoading()
   const autoplayRef = React.useRef<NodeJS.Timeout | null>(null)
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
   const [isPaused, setIsPaused] = React.useState(false)
@@ -68,8 +68,13 @@ export function HeroCarousel() {
     }, 5000)
   }, [api, isPaused])
 
+  const resetAutoplay = React.useCallback(() => {
+    setIsPaused(false);
+    startAutoplay();
+  }, [startAutoplay]);
+
   React.useEffect(() => {
-    if (!api) return
+    if (!api || !preloaderFinished) return
 
     const onSelect = () => {
       setActiveIndex(api.selectedScrollSnap())
@@ -78,7 +83,7 @@ export function HeroCarousel() {
 
     api.on("select", onSelect)
 
-    // Start autoplay when the component mounts and api is available
+    // Start autoplay only when the preloader has finished
     startAutoplay()
 
     return () => {
@@ -87,7 +92,7 @@ export function HeroCarousel() {
         clearInterval(autoplayRef.current)
       }
     }
-  }, [api, startAutoplay])
+  }, [api, startAutoplay, preloaderFinished])
 
   React.useEffect(() => {
     if (!isLoading) {
@@ -107,13 +112,17 @@ export function HeroCarousel() {
     }
   }, [])
 
-  const handleMouseEnter = () => {
-    setIsPaused(true)
+  const handleMouseEnter = (event: React.MouseEvent) => {
+    if (event.currentTarget === event.target) {
+      setIsPaused(true);
+    }
   }
 
-  const handleMouseLeave = () => {
-    setIsPaused(false)
-    startAutoplay()
+  const handleMouseLeave = (event: React.MouseEvent) => {
+    if (event.currentTarget === event.target) {
+      setIsPaused(false);
+      startAutoplay();
+    }
   }
 
   return (
@@ -132,7 +141,11 @@ export function HeroCarousel() {
       >
         <CarouselContent className="-ml-2 md:-ml-4 overflow-visible">
           {heroItems.map((item, index) => (
-            <CarouselItem key={index} className="pl-4 basis-[85%] md:basis-[85%] overflow-visible">
+            <CarouselItem 
+              key={index} 
+              className="pl-4 basis-[85%] md:basis-[85%] overflow-visible"
+              onClick={resetAutoplay}
+            >
               <div className="relative h-[60vh] md:h-[75vh] overflow-hidden rounded-md">
                 {item.background.type === 'video' ? (
                   <>
@@ -192,8 +205,8 @@ export function HeroCarousel() {
                 index === current ? "bg-white" : "bg-white/50"
               }`}
               onClick={() => {
-                api?.scrollTo(index)
-                startAutoplay()
+                api?.scrollTo(index);
+                resetAutoplay();
               }}
             />
           ))}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLoading } from '@/context/loading-context'
 
 export function Preloader() {
   const [isLoading, setIsLoading] = useState(true)
@@ -10,6 +11,7 @@ export function Preloader() {
   const [retryCount, setRetryCount] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
   const maxRetries = 3
+  const { setPreloaderFinished } = useLoading()
 
   useEffect(() => {
     const video = videoRef.current
@@ -84,6 +86,7 @@ export function Preloader() {
     // Only proceed if video has actually played
     if (isVideoReady) {
       setIsLoading(false)
+      setPreloaderFinished(true)
     }
   }
 
@@ -91,8 +94,9 @@ export function Preloader() {
   useEffect(() => {
     if (!isLoading) {
       document.body.style.overflow = ''
+      setPreloaderFinished(true)
     }
-  }, [isLoading])
+  }, [isLoading, setPreloaderFinished])
 
   return (
     <AnimatePresence>
