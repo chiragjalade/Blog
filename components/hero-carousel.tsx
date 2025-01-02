@@ -14,6 +14,7 @@ import { useLoading } from '@/context/loading-context'
 
 const heroItems = [
   {
+    id: "sora",
     title: "Sora",
     description: "Bring your imagination to life from text, image, or video.",
     background: {
@@ -24,6 +25,7 @@ const heroItems = [
     link: "/sora",
   },
   {
+    id: "chatgpt",
     title: "ChatGPT",
     description: "Get started with our most advanced AI assistant.",
     background: {
@@ -34,6 +36,7 @@ const heroItems = [
     link: "/chatgpt",
   },
   {
+    id: "dalle",
     title: "DALL·E 3",
     description: "Create stunning images with our most advanced image generation model.",
     background: {
@@ -51,6 +54,7 @@ export function HeroCarousel() {
   const [activeIndex, setActiveIndex] = React.useState(0)
   const { isLoading } = useLoading()
   const autoplayRef = React.useRef<NodeJS.Timeout>()
+  const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
 
   React.useEffect(() => {
     if (!api) return
@@ -87,6 +91,24 @@ export function HeroCarousel() {
     }
   }, [api, isLoading])
 
+  React.useEffect(() => {
+    if (!isLoading) {
+      videoRefs.current.forEach((video) => {
+        if (video) {
+          video.play().catch(error => console.error('Video playback error:', error))
+        }
+      })
+    }
+  }, [isLoading])
+
+  const setVideoRef = React.useCallback((el: HTMLVideoElement | null, id: string) => {
+    if (el) {
+      videoRefs.current.set(id, el)
+    } else {
+      videoRefs.current.delete(id)
+    }
+  }, [])
+
   return (
     <div className="w-screen relative overflow-visible left-1/2 right-1/2 -mx-[50vw]">
       <Carousel
@@ -104,6 +126,7 @@ export function HeroCarousel() {
                 {item.background.type === 'video' ? (
                   <>
                     <video
+                      ref={(el) => setVideoRef(el, item.id)}
                       autoPlay
                       muted
                       loop
