@@ -98,6 +98,8 @@ export function HeroCarousel() {
     if (!isLoading) {
       videoRefs.current.forEach((video) => {
         if (video) {
+          // The video should now load from cache if available
+          video.load()
           video.play().catch(error => console.error('Video playback error:', error))
         }
       })

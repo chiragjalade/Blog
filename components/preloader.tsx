@@ -3,6 +3,17 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLoading } from '@/context/loading-context'
+import { preloadAllVideos } from '@/lib/video-cache'
+
+// Define all video URLs that need to be preloaded
+const ALL_VIDEOS = [
+  // Preloader video
+  "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/h2bdp3suzfagpqlleohg.webm",
+  // Hero carousel videos
+  "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm",
+  "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm",
+  "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm"
+]
 
 export function Preloader() {
   const [isLoading, setIsLoading] = useState(true)
@@ -13,30 +24,28 @@ export function Preloader() {
   const maxRetries = 3
   const { setPreloaderFinished } = useLoading()
 
+  // Preload all videos when component mounts
+  useEffect(() => {
+    const preloadVideos = async () => {
+      await preloadAllVideos(ALL_VIDEOS)
+    }
+    preloadVideos()
+  }, [])
+
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
 
     const loadVideo = async () => {
       try {
-        // Reset error state on retry
         setHasVideoError(false)
-
-        // Ensure video is loaded
         await video.load()
-
-        // Try to play the video
         await video.play()
-
-        // If successful, mark as ready
         setIsVideoReady(true)
       } catch (error) {
         console.error('Video loading/playing error:', error)
-        
-        // If we haven't exceeded max retries, try again
         if (retryCount < maxRetries) {
           setRetryCount(prev => prev + 1)
-          // Exponential backoff for retries
           setTimeout(loadVideo, Math.pow(2, retryCount) * 1000)
         } else {
           setHasVideoError(true)
@@ -45,8 +54,7 @@ export function Preloader() {
     }
 
     const handleCanPlay = () => {
-      // Additional check to ensure video can actually play
-      if (video.readyState >= 3) { // HAVE_FUTURE_DATA or better
+      if (video.readyState >= 3) {
         setIsVideoReady(true)
         video.play().catch(error => {
           console.error('Video playback error:', error)
@@ -65,14 +73,9 @@ export function Preloader() {
       }
     }
 
-    // Start loading the video
     loadVideo()
-
-    // Add event listeners
     video.addEventListener('canplay', handleCanPlay)
     video.addEventListener('error', handleError)
-
-    // Lock scroll while loading
     document.body.style.overflow = 'hidden'
 
     return () => {
@@ -83,14 +86,12 @@ export function Preloader() {
   }, [retryCount])
 
   const handleVideoEnded = () => {
-    // Only proceed if video has actually played
     if (isVideoReady) {
       setIsLoading(false)
       setPreloaderFinished(true)
     }
   }
 
-  // Unlock scroll when preloader is done
   useEffect(() => {
     if (!isLoading) {
       document.body.style.overflow = ''
@@ -119,7 +120,6 @@ export function Preloader() {
                   isVideoReady ? 'opacity-100' : 'opacity-0'
                 } transition-opacity duration-300`}
               >
-                {/* Provide multiple sources for better compatibility */}
                 <source 
                   src="https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/h2bdp3suzfagpqlleohg.webm" 
                   type="video/webm" 
