@@ -53,43 +53,41 @@ export function HeroCarousel() {
   const [current, setCurrent] = React.useState(0)
   const [activeIndex, setActiveIndex] = React.useState(0)
   const { isLoading } = useLoading()
-  const autoplayRef = React.useRef<NodeJS.Timeout>()
+  const autoplayRef = React.useRef<NodeJS.Timeout | null>(null)
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
+  const [isPaused, setIsPaused] = React.useState(false)
+
+  const startAutoplay = React.useCallback(() => {
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current)
+    }
+    autoplayRef.current = setInterval(() => {
+      if (!isPaused && api) {
+        api.scrollNext()
+      }
+    }, 5000)
+  }, [api, isPaused])
 
   React.useEffect(() => {
     if (!api) return
-    
+
     const onSelect = () => {
       setActiveIndex(api.selectedScrollSnap())
       setCurrent(api.selectedScrollSnap())
     }
 
     api.on("select", onSelect)
-    api.on("settle", onSelect)
 
-    return () => {
-      api.off("select", onSelect)
-      api.off("settle", onSelect)
-    }
-  }, [api])
-
-  React.useEffect(() => {
-    if (!api || isLoading) return
-
-    const startAutoplay = () => {
-      autoplayRef.current = setInterval(() => {
-        api.scrollNext()
-      }, 5000)
-    }
-
+    // Start autoplay when the component mounts and api is available
     startAutoplay()
 
     return () => {
+      api.off("select", onSelect)
       if (autoplayRef.current) {
         clearInterval(autoplayRef.current)
       }
     }
-  }, [api, isLoading])
+  }, [api, startAutoplay])
 
   React.useEffect(() => {
     if (!isLoading) {
@@ -109,8 +107,21 @@ export function HeroCarousel() {
     }
   }, [])
 
+  const handleMouseEnter = () => {
+    setIsPaused(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsPaused(false)
+    startAutoplay()
+  }
+
   return (
-    <div className="w-screen relative overflow-visible left-1/2 right-1/2 -mx-[50vw]">
+    <div 
+      className="w-screen relative overflow-visible left-1/2 right-1/2 -mx-[50vw]"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Carousel
         setApi={setApi}
         className="w-full"
@@ -180,7 +191,10 @@ export function HeroCarousel() {
               className={`h-2 w-2 rounded-full transition-colors ${
                 index === current ? "bg-white" : "bg-white/50"
               }`}
-              onClick={() => api?.scrollTo(index)}
+              onClick={() => {
+                api?.scrollTo(index)
+                startAutoplay()
+              }}
             />
           ))}
         </div>
