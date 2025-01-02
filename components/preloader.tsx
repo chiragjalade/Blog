@@ -93,7 +93,7 @@ export function Preloader() {
                 } transition-opacity duration-300`}
               >
                 <source 
-                  src="https://res.cloudinary.com/ddpumiekp/video/upload/q_auto,f_auto,w_auto,c_scale/v1735737212/laz0pfn5ufh7toqsgv5k.mp4" 
+                  src="https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/h2bdp3suzfagpqlleohg.webm" 
                   type="video/mp4" 
                 />
               </video>

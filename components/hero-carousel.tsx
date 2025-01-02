@@ -19,7 +19,7 @@ const heroItems = [
     description: "Bring your imagination to life from text, image, or video.",
     background: {
       type: "video",
-      src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735693338/bkghllnor54tze1wdbkd.mp4",
+      src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/sora",
@@ -30,7 +30,7 @@ const heroItems = [
     description: "Get started with our most advanced AI assistant.",
     background: {
       type: "video",
-      src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735693261/fopeyehmkrw28oye5mki.mp4",
+      src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/chatgpt",
@@ -41,7 +41,7 @@ const heroItems = [
     description: "Create stunning images with our most advanced image generation model.",
     background: {
       type: "video",
-      src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735692461/c8sig05jlzlrnrchcp9v.mp4",
+      src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/dalle",
