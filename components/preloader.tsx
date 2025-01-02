@@ -7,69 +7,92 @@ export function Preloader() {
   const [isLoading, setIsLoading] = useState(true)
   const [isVideoReady, setIsVideoReady] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const maxRetries = 3
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
 
+    const loadVideo = async () => {
+      try {
+        // Reset error state on retry
+        setHasVideoError(false)
+
+        // Ensure video is loaded
+        await video.load()
+
+        // Try to play the video
+        await video.play()
+
+        // If successful, mark as ready
+        setIsVideoReady(true)
+      } catch (error) {
+        console.error('Video loading/playing error:', error)
+        
+        // If we haven't exceeded max retries, try again
+        if (retryCount < maxRetries) {
+          setRetryCount(prev => prev + 1)
+          // Exponential backoff for retries
+          setTimeout(loadVideo, Math.pow(2, retryCount) * 1000)
+        } else {
+          setHasVideoError(true)
+        }
+      }
+    }
+
     const handleCanPlay = () => {
-      setIsVideoReady(true)
-      video.play().catch(error => {
-        console.error('Video playback error:', error)
-        setHasVideoError(true)
-      })
+      // Additional check to ensure video can actually play
+      if (video.readyState >= 3) { // HAVE_FUTURE_DATA or better
+        setIsVideoReady(true)
+        video.play().catch(error => {
+          console.error('Video playback error:', error)
+          setHasVideoError(true)
+        })
+      }
     }
 
-    const handleError = (e: ErrorEvent) => {
+    const handleError = (e: Event) => {
       console.error('Video error:', e)
-      setHasVideoError(true)
-    }
-
-    video.addEventListener('canplay', handleCanPlay)
-    video.addEventListener('error', handleError as EventListener)
-
-    // Lock scroll
-    document.body.style.overflow = 'hidden'
-
-    // Fallback timeout in case video doesn't load
-    timeoutRef.current = setTimeout(() => {
-      if (!isVideoReady && !hasVideoError) {
+      if (retryCount < maxRetries) {
+        setRetryCount(prev => prev + 1)
+        loadVideo()
+      } else {
         setHasVideoError(true)
       }
-    }, 5000) // 5 seconds timeout
+    }
+
+    // Start loading the video
+    loadVideo()
+
+    // Add event listeners
+    video.addEventListener('canplay', handleCanPlay)
+    video.addEventListener('error', handleError)
+
+    // Lock scroll while loading
+    document.body.style.overflow = 'hidden'
 
     return () => {
       video.removeEventListener('canplay', handleCanPlay)
-      video.removeEventListener('error', handleError as EventListener)
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
+      video.removeEventListener('error', handleError)
+      document.body.style.overflow = ''
     }
-  }, [isVideoReady, hasVideoError])
+  }, [retryCount])
 
   const handleVideoEnded = () => {
-    setIsLoading(false)
+    // Only proceed if video has actually played
+    if (isVideoReady) {
+      setIsLoading(false)
+    }
   }
 
+  // Unlock scroll when preloader is done
   useEffect(() => {
     if (!isLoading) {
-      // Unlock scroll when preloader disappears
       document.body.style.overflow = ''
     }
   }, [isLoading])
-
-  useEffect(() => {
-    if (hasVideoError) {
-      // If video fails to load, end the preloader after a short delay
-      const errorTimeout = setTimeout(() => {
-        setIsLoading(false)
-      }, 2000) // 2 seconds delay to show the loading circle
-
-      return () => clearTimeout(errorTimeout)
-    }
-  }, [hasVideoError])
 
   return (
     <AnimatePresence>
@@ -92,16 +115,27 @@ export function Preloader() {
                   isVideoReady ? 'opacity-100' : 'opacity-0'
                 } transition-opacity duration-300`}
               >
+                {/* Provide multiple sources for better compatibility */}
                 <source 
                   src="https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/h2bdp3suzfagpqlleohg.webm" 
+                  type="video/webm" 
+                />
+                <source 
+                  src="https://res.cloudinary.com/ddpumiekp/video/upload/f_mp4/v1735823235/h2bdp3suzfagpqlleohg.webm" 
                   type="video/mp4" 
                 />
+                Your browser does not support the video tag.
               </video>
             )}
             <div className="absolute inset-0 bg-black/30" />
             {(!isVideoReady || hasVideoError) && (
-              <div className="absolute inset-0 bg-black flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="absolute inset-0 bg-black flex flex-col items-center justify-center gap-4">
+                <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin" />
+                {hasVideoError && retryCount >= maxRetries && (
+                  <p className="text-white/60 text-sm">
+                    Having trouble loading the video...
+                  </p>
+                )}
               </div>
             )}
             <motion.div 
