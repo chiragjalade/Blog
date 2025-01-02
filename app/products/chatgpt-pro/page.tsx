@@ -6,14 +6,20 @@ import { useRouter } from 'next/navigation'
 import { ArrowRight, ArrowLeft } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { SiteHeader } from "@/components/site-header"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Inter } from 'next/font/google'
+import { useLoading } from '@/context/loading-context'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function SoraPage() {
+export default function ChatGPTProPage() {
   const router = useRouter()
   const [isExiting, setIsExiting] = useState(false)
+  const { resetLoading } = useLoading()
+
+  useEffect(() => {
+    resetLoading()
+  }, [resetLoading])
 
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -87,22 +93,22 @@ export default function SoraPage() {
                 <motion.header variants={itemVariants} className="mb-12 md:mb-16 text-center">
                   <motion.time 
                     variants={itemVariants}
-                    dateTime="2024-12-09" 
+                    dateTime="2024-12-05" 
                     className="block text-sm text-white/60 mb-4"
                   >
-                    December 9, 2024
+                    December 5, 2024
                   </motion.time>
                   <motion.h1 
                     variants={itemVariants}
                     className="text-4xl md:text-6xl font-medium text-white mb-6"
                   >
-                    Sora is here
+                    Introducing ChatGPT Pro
                   </motion.h1>
                   <motion.p 
                     variants={itemVariants}
                     className="text-xl md:text-2xl text-white/90 mb-4"
                   >
-                    We&apos;re moving our video generation model out of research preview.
+                    Broadening usage of frontier AI.
                   </motion.p>
                   <motion.div
                     variants={itemVariants}
@@ -120,16 +126,8 @@ export default function SoraPage() {
                     size="lg"
                     className="bg-white text-black hover:bg-white/90 rounded-full px-8"
                   >
-                    <Link href="#learn-more">Learn more</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="ghost"
-                    size="lg"
-                    className="text-white hover:bg-white/10 rounded-full px-8"
-                  >
-                    <Link href="#system-card" className="flex items-center gap-2">
-                      System Card
+                    <Link href="https://chat.openai.com/auth/login" className="flex items-center gap-2">
+                      Start now
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
@@ -139,25 +137,13 @@ export default function SoraPage() {
                   className="prose prose-invert mx-auto px-2 sm:px-0"
                 >
                   <p className="text-lg md:text-xl text-white/90">
-                    Our video generation model is rolling out at{" "}
-                    <Link href="https://sora.com" className="text-white hover:text-white/90 underline underline-offset-4">
-                      sora.com
-                    </Link>
-                    .
+                    As AI becomes more advanced, it will solve increasingly complex and critical problems. It also takes significantly more compute to power these capabilities.
                   </p>
                   <p className="text-lg md:text-xl text-white/90">
-                    Earlier this year, we{" "}
-                    <Link href="#" className="text-white hover:text-white/90 underline underline-offset-4">
-                      introduced Sora
-                    </Link>
-                    , our model that can create realistic videos from text, and shared{" "}
-                    <Link href="#" className="text-white hover:text-white/90 underline underline-offset-4">
-                      our initial research
-                    </Link>{" "}
-                    progress on world simulation. Sora serves as a foundation for AI that understands and simulates reality—an important step towards developing models that can interact with the physical world.
+                    Today, we&apos;re adding ChatGPT Pro, a $200 monthly plan that enables scaled access to the best of OpenAI&apos;s models and tools. This plan includes unlimited access to our smartest model, OpenAI o1, as well as to o1-mini, GPT-4o, and Advanced Voice. It also includes o1 pro mode, a version of o1 that uses more compute to think harder and provide even better answers to the hardest problems. In the future, we expect to add more powerful, compute-intensive productivity features to this plan.
                   </p>
                   <p className="text-lg md:text-xl text-white/90">
-                    We&apos;re releasing it today as a standalone product at Sora.com to ChatGPT Plus and Pro users.
+                    ChatGPT Pro provides a way for researchers, engineers, and other individuals who use research-grade intelligence daily to accelerate their productivity and be at the cutting edge of advancements in AI.
                   </p>
                 </motion.div>
               </div>
@@ -168,3 +154,4 @@ export default function SoraPage() {
     </>
   )
 }
+
