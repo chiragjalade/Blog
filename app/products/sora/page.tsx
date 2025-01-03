@@ -6,30 +6,18 @@ import { useRouter } from 'next/navigation'
 import { ArrowRight, ArrowLeft } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { SiteHeader } from "@/components/site-header"
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Inter } from 'next/font/google'
-import { useLoading } from '@/context/loading-context'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function SoraPage() {
   const router = useRouter()
   const [isExiting, setIsExiting] = useState(false)
-  const { resetLoading } = useLoading()
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      resetLoading()
-    }
-  }, [resetLoading])
 
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault()
     setIsExiting(true)
-    // Delay navigation to allow animation to complete
-    setTimeout(() => {
-      router.push('/')
-    }, 500) // Adjust this value to match your animation duration
   }
 
   const containerVariants = {
@@ -71,7 +59,7 @@ export default function SoraPage() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="min-h-screen bg-black"
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" onExitComplete={() => router.back()}>
           {!isExiting && (
             <motion.article 
               key="article"
@@ -180,4 +168,3 @@ export default function SoraPage() {
     </>
   )
 }
-

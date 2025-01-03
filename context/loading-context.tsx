@@ -29,16 +29,6 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
 
 export function useLoading() {
   const context = useContext(LoadingContext)
-  if (typeof window === 'undefined') {
-    // Return a dummy context for server-side rendering
-    return {
-      isLoading: false,
-      setIsLoading: () => {},
-      resetLoading: () => {},
-      preloaderFinished: true,
-      setPreloaderFinished: () => {},
-    }
-  }
   if (context === undefined) {
     throw new Error('useLoading must be used within a LoadingProvider')
   }
