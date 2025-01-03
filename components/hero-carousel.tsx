@@ -11,6 +11,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel"
 import { useLoading } from '@/context/loading-context'
+import { preloadAllVideos } from '@/lib/video-cache'
 
 const heroItems = [
   {
@@ -20,6 +21,7 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823236/lzin8boldj9y0lwkr2c6.jpg",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/sora",
@@ -31,6 +33,7 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823235/j00jvvlp7qbup2ssn0kp.jpg",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/chatgpt",
@@ -42,6 +45,7 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823685/udrlrpx0hq4sl3hmon21.jpg",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/dalle",
@@ -56,6 +60,14 @@ export function HeroCarousel() {
   const autoplayRef = React.useRef<NodeJS.Timeout | null>(null)
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
   const [isPaused, setIsPaused] = React.useState(false)
+
+  React.useEffect(() => {
+    // Preload all videos and poster images
+    preloadAllVideos(heroItems.map(item => ({
+      src: item.background.src,
+      poster: item.background.poster
+    })))
+  }, [])
 
   const startAutoplay = React.useCallback(() => {
     if (autoplayRef.current) {
@@ -98,7 +110,6 @@ export function HeroCarousel() {
     if (!isLoading) {
       videoRefs.current.forEach((video) => {
         if (video) {
-          // The video should now load from cache if available
           video.load()
           video.play().catch(error => console.error('Video playback error:', error))
         }
@@ -158,9 +169,10 @@ export function HeroCarousel() {
                       loop
                       playsInline
                       className="absolute inset-0 w-full h-full object-cover"
-                      poster={item.background.fallback}
+                      poster={item.background.poster}
                     >
-                      <source src={item.background.src} type="video/mp4" />
+                      <source src={item.background.src} type="video/webm" />
+                      <source src={item.background.src.replace('.webm', '.mp4')} type="video/mp4" />
                     </video>
                     <div className="absolute inset-0 bg-black/20 rounded-xl" />
                   </>
