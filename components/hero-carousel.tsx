@@ -60,6 +60,7 @@ export function HeroCarousel() {
   const autoplayRef = React.useRef<NodeJS.Timeout | null>(null)
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
   const [isPaused, setIsPaused] = React.useState(false)
+  const [videosLoaded, setVideosLoaded] = React.useState<Set<string>>(new Set())
 
   React.useEffect(() => {
     // Preload all videos and poster images
@@ -108,14 +109,16 @@ export function HeroCarousel() {
 
   React.useEffect(() => {
     if (!isLoading) {
-      videoRefs.current.forEach((video) => {
-        if (video) {
+      videoRefs.current.forEach((video, id) => {
+        if (video && !videosLoaded.has(id)) {
           video.load()
-          video.play().catch(error => console.error('Video playback error:', error))
+          video.play().then(() => {
+            setVideosLoaded(prev => new Set(prev).add(id))
+          }).catch(error => console.error('Video playback error:', error))
         }
       })
     }
-  }, [isLoading])
+  }, [isLoading, videosLoaded])
 
   const setVideoRef = React.useCallback((el: HTMLVideoElement | null, id: string) => {
     if (el) {
@@ -162,14 +165,22 @@ export function HeroCarousel() {
               <div className="relative h-[60vh] md:h-[75vh] overflow-hidden rounded-md">
                 {item.background.type === 'video' ? (
                   <>
+                    <Image
+                      src={item.background.poster}
+                      alt={item.title}
+                      fill
+                      className={`object-cover transition-opacity duration-300 ${videosLoaded.has(item.id) ? 'opacity-0' : 'opacity-100'}`}
+                      priority={index === 0}
+                    />
                     <video
                       ref={(el) => setVideoRef(el, item.id)}
                       autoPlay
                       muted
                       loop
                       playsInline
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${videosLoaded.has(item.id) ? 'opacity-100' : 'opacity-0'}`}
                       poster={item.background.poster}
+                      onCanPlayThrough={() => setVideosLoaded(prev => new Set(prev).add(item.id))}
                     >
                       <source src={item.background.src} type="video/webm" />
                       <source src={item.background.src.replace('.webm', '.mp4')} type="video/mp4" />
