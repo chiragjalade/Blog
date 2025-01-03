@@ -24,6 +24,9 @@ export default function ChatGPTProPage() {
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault()
     setIsExiting(true)
+    setTimeout(() => {
+      router.push('/')
+    }, 500)
   }
 
   const containerVariants = {
@@ -65,7 +68,7 @@ export default function ChatGPTProPage() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="min-h-screen bg-black"
       >
-        <AnimatePresence mode="wait" onExitComplete={() => router.back()}>
+        <AnimatePresence mode="wait">
           {!isExiting && (
             <motion.article 
               key="article"

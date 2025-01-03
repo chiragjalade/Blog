@@ -10,6 +10,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import { useRouter } from 'next/navigation'
 
 interface CarouselProps {
   title: string
@@ -28,6 +29,7 @@ interface CarouselProps {
 
 export function ProductCarousel({ title, items }: CarouselProps) {
   const [api, setApi] = React.useState<CarouselApi | null>(null)
+  const router = useRouter()
 
   return (
     <section className="py-4 md:py-8">
@@ -71,8 +73,15 @@ export function ProductCarousel({ title, items }: CarouselProps) {
                 key={index} 
                 className="pl-4 basis-3/4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 snap-start"
               >
-                <Link href={item.link} className="block">
-                  <div className="group relative aspect-[3/4] overflow-hidden rounded-lg">
+                <Link 
+                  href={item.link} 
+                  className="block" 
+                  onClick={(e) => {
+                    e.preventDefault()
+                    router.push(item.link)
+                  }}
+                >
+                  <div className="group relative aspect-[3/4] overflow-hidden rounded-md">
                     {item.background ? (
                       item.background.type === 'video' ? (
                         <>
