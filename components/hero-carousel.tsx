@@ -10,6 +10,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel"
 import { useLoading } from '@/context/loading-context'
+import { useVideo } from '@/context/video-context'
 
 const heroItems = [
   {
@@ -49,6 +50,7 @@ export function HeroCarousel() {
   const [current, setCurrent] = React.useState(0)
   const [activeIndex, setActiveIndex] = React.useState(0)
   const { isLoading, preloaderFinished } = useLoading()
+  const { loadedVideos, setVideoLoaded } = useVideo()
   const autoplayRef = React.useRef<NodeJS.Timeout | null>(null)
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
   const [isPaused, setIsPaused] = React.useState(false)
@@ -92,14 +94,16 @@ export function HeroCarousel() {
 
   React.useEffect(() => {
     if (!isLoading) {
-      videoRefs.current.forEach((video) => {
-        if (video) {
+      videoRefs.current.forEach((video, id) => {
+        if (video && !loadedVideos.has(id)) {
           video.load()
-          video.play().catch(error => console.error('Video playback error:', error))
+          video.play().then(() => {
+            setVideoLoaded(id)
+          }).catch(error => console.error('Video playback error:', error))
         }
       })
     }
-  }, [isLoading])
+  }, [isLoading, loadedVideos, setVideoLoaded])
 
   const setVideoRef = React.useCallback((el: HTMLVideoElement | null, id: string) => {
     if (el) {

@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import "./globals.css"
 import { Preloader } from "@/components/preloader"
 import { LoadingProvider } from "@/context/loading-context"
+import { VideoProvider } from "@/context/video-context"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -20,8 +21,10 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-black antialiased`}>
         <LoadingProvider>
-          <Preloader />
-          {children}
+          <VideoProvider>
+            <Preloader />
+            {children}
+          </VideoProvider>
         </LoadingProvider>
       </body>
     </html>
