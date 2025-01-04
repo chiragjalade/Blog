@@ -1,6 +1,5 @@
 import { HeroCarousel } from "@/components/hero-carousel"
 import { ProductCarousel } from "@/components/product-carousel"
-import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Globe, Pencil } from 'lucide-react'
 
@@ -128,7 +127,6 @@ const research = [
 export default function Home() {
   return (
     <>
-      <SiteHeader />
       <main className="min-h-screen bg-black pt-16"> {/* Added pt-16 for top padding */}
         <div className="container mx-auto px-0 py-4">
           <HeroCarousel />
