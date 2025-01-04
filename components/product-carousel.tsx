@@ -30,7 +30,7 @@ export function ProductCarousel({ title, items }: CarouselProps) {
   const [api, setApi] = React.useState<CarouselApi | null>(null)
 
   return (
-    <section className="py-4 md:py-8">
+    <section className="py-4 md:py-8 overflow-hidden">
       <div className="container px-4 sm:px-6 lg:px-8">
         <div className="mb-4 md:mb-6 flex items-center justify-between">
           <h2 className="text-2xl md:text-4xl font-medium text-white">
@@ -54,7 +54,7 @@ export function ProductCarousel({ title, items }: CarouselProps) {
           </div>
         </div>
       </div>
-      <div className="relative overflow-hidden">
+      <div className="relative">
         <Carousel
           setApi={setApi}
           opts={{

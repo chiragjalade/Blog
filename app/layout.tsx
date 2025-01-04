@@ -18,10 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-black antialiased`}>
+      <body className={`${inter.className} bg-black antialiased overflow-x-hidden`}>
         <LoadingProvider>
           <Preloader />
-          {children}
+          <div className="relative w-full">
+            {children}
+          </div>
         </LoadingProvider>
       </body>
     </html>
