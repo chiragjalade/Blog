@@ -22,8 +22,8 @@ export default function RootLayout({
       <body className={`${inter.className} bg-black antialiased overflow-x-hidden`}>
         <LoadingProvider>
           <Preloader />
-          <SiteHeader />
           <div className="relative w-full">
+            <SiteHeader />
             {children}
           </div>
         </LoadingProvider>
