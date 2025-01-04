@@ -8,7 +8,7 @@ export async function preloadAndCacheVideo(url: string): Promise<void> {
     
     if (!cachedResponse) {
       // If not in cache, fetch and store it
-      const response = await fetch(url);
+      const response = await fetch(url, { method: 'HEAD' });
       if (response.ok) {
         await cache.put(url, response.clone());
       }
@@ -24,7 +24,7 @@ export async function preloadAndCacheImage(url: string): Promise<void> {
     const cachedResponse = await cache.match(url);
     
     if (!cachedResponse) {
-      const response = await fetch(url);
+      const response = await fetch(url, { method: 'HEAD' });
       if (response.ok) {
         await cache.put(url, response.clone());
       }
@@ -44,3 +44,4 @@ export async function preloadAllVideos(items: { src: string, poster: string }[])
     console.error('Error preloading videos and images:', error);
   }
 }
+

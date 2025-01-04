@@ -56,17 +56,17 @@ export function HeroCarousel() {
   const [api, setApi] = React.useState<CarouselApi | null>(null)
   const [current, setCurrent] = React.useState(0)
   const [activeIndex, setActiveIndex] = React.useState(0)
-  const { isLoading, preloaderFinished } = useLoading()
+  const { preloaderFinished } = useLoading()
   const autoplayRef = React.useRef<NodeJS.Timeout | null>(null)
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
   const [isPaused, setIsPaused] = React.useState(false)
-  const [videoStates, setVideoStates] = React.useState<Map<string, { isLoaded: boolean, isPlaying: boolean }>>(new Map())
+  const [videoStates, setVideoStates] = React.useState<Map<string, { isLoaded: boolean, isPlaying: boolean, hasError: boolean }>>(new Map())
 
   // Initialize video states
   React.useEffect(() => {
     const initialStates = new Map()
     heroItems.forEach(item => {
-      initialStates.set(item.id, { isLoaded: false, isPlaying: false })
+      initialStates.set(item.id, { isLoaded: false, isPlaying: false, hasError: false })
     })
     setVideoStates(initialStates)
   }, [])
@@ -130,31 +130,42 @@ export function HeroCarousel() {
     })
   }, [])
 
-  React.useEffect(() => {
-    if (!isLoading) {
-      videoRefs.current.forEach((video, id) => {
-        if (video && !videoStates.get(id)?.isPlaying) {
-          const playVideo = async () => {
-            try {
-              await video.play()
-              handleVideoPlay(id)
-            } catch (error) {
-              console.error('Video playback error:', error)
-            }
-          }
-          playVideo()
-        }
-      })
+  const handleVideoError = React.useCallback((id: string) => {
+    setVideoStates(prev => {
+      const newStates = new Map(prev)
+      newStates.set(id, { ...newStates.get(id)!, hasError: true })
+      return newStates
+    })
+    console.error(`Error loading video for ${id}`)
+  }, [])
+
+  const playVideo = React.useCallback(async (video: HTMLVideoElement, id: string) => {
+    try {
+      await video.play()
+      handleVideoPlay(id)
+    } catch (error) {
+      console.error('Video playback error:', error)
+      handleVideoError(id)
     }
-  }, [isLoading, videoStates, handleVideoPlay])
+  }, [handleVideoPlay, handleVideoError])
+
+  React.useEffect(() => {
+    videoRefs.current.forEach((video, id) => {
+      if (video && !videoStates.get(id)?.isPlaying && !videoStates.get(id)?.hasError) {
+        playVideo(video, id)
+      }
+    })
+  }, [videoStates, playVideo])
 
   const setVideoRef = React.useCallback((el: HTMLVideoElement | null, id: string) => {
     if (el) {
       videoRefs.current.set(id, el)
+      // Attempt to play the video as soon as the ref is set
+      playVideo(el, id)
     } else {
       videoRefs.current.delete(id)
     }
-  }, [])
+  }, [playVideo])
 
   const handleMouseEnter = (event: React.MouseEvent) => {
     if (event.currentTarget === event.target) {
@@ -194,26 +205,34 @@ export function HeroCarousel() {
                 {item.background.type === 'video' ? (
                   <>
                     <div 
-                      className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 ${
-                        videoStates.get(item.id)?.isPlaying ? 'opacity-0' : 'opacity-100'
-                      }`}
+                      className="absolute inset-0 bg-cover bg-center"
                       style={{ backgroundImage: `url(${item.background.poster})` }}
                     />
                     <video
                       ref={(el) => setVideoRef(el, item.id)}
-                      autoPlay
+                      src={item.background.src}
+                      poster={item.background.poster}
                       muted
                       loop
                       playsInline
-                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-                        videoStates.get(item.id)?.isPlaying ? 'opacity-100' : 'opacity-0'
-                      }`}
+                      autoPlay
+                      className="absolute inset-0 w-full h-full object-cover"
                       onLoadedData={() => handleVideoLoad(item.id)}
                       onPlaying={() => handleVideoPlay(item.id)}
+                      onError={() => handleVideoError(item.id)}
                     >
                       <source src={item.background.src} type="video/webm" />
                       <source src={item.background.src.replace('.webm', '.mp4')} type="video/mp4" />
+                      Your browser does not support the video tag.
                     </video>
+                    {videoStates.get(item.id)?.hasError && (
+                      <Image
+                        src={item.background.fallback}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-black/20 rounded-xl" />
                   </>
                 ) : (
