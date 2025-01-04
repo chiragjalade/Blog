@@ -10,9 +10,9 @@ const ALL_VIDEOS = [
   // Preloader video
   { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/h2bdp3suzfagpqlleohg.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823235/h2bdp3suzfagpqlleohg.jpg" },
   // Hero carousel videos
-  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823236/lzin8boldj9y0lwkr2c6.jpg" },
-  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823235/j00jvvlp7qbup2ssn0kp.jpg" },
-  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823685/udrlrpx0hq4sl3hmon21.jpg" }
+  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945674/hero-carousel-preload-images/jwqdqj2hr0yqkukocaa3.png" },
+  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945787/hero-carousel-preload-images/a1jqcdhp5qxlirqdoks1.png" },
+  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945879/hero-carousel-preload-images/lrwbj2hk1vfrna0dngau.png" }
 ]
 
 export function Preloader() {

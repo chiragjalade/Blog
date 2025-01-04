@@ -21,7 +21,7 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823236/lzin8boldj9y0lwkr2c6.jpg",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945674/hero-carousel-preload-images/jwqdqj2hr0yqkukocaa3.png",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/sora",
@@ -33,7 +33,7 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823235/j00jvvlp7qbup2ssn0kp.jpg",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945787/hero-carousel-preload-images/a1jqcdhp5qxlirqdoks1.png",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/chatgpt",
@@ -45,7 +45,7 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823685/udrlrpx0hq4sl3hmon21.jpg",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945879/hero-carousel-preload-images/lrwbj2hk1vfrna0dngau.png",
       fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/dalle",
@@ -60,7 +60,16 @@ export function HeroCarousel() {
   const autoplayRef = React.useRef<NodeJS.Timeout | null>(null)
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
   const [isPaused, setIsPaused] = React.useState(false)
-  const [videosLoaded, setVideosLoaded] = React.useState<Set<string>>(new Set())
+  const [videoStates, setVideoStates] = React.useState<Map<string, { isLoaded: boolean, isPlaying: boolean }>>(new Map())
+
+  // Initialize video states
+  React.useEffect(() => {
+    const initialStates = new Map()
+    heroItems.forEach(item => {
+      initialStates.set(item.id, { isLoaded: false, isPlaying: false })
+    })
+    setVideoStates(initialStates)
+  }, [])
 
   React.useEffect(() => {
     // Preload all videos and poster images
@@ -95,8 +104,6 @@ export function HeroCarousel() {
     }
 
     api.on("select", onSelect)
-
-    // Start autoplay only when the preloader has finished
     startAutoplay()
 
     return () => {
@@ -107,18 +114,39 @@ export function HeroCarousel() {
     }
   }, [api, startAutoplay, preloaderFinished])
 
+  const handleVideoLoad = React.useCallback((id: string) => {
+    setVideoStates(prev => {
+      const newStates = new Map(prev)
+      newStates.set(id, { ...newStates.get(id)!, isLoaded: true })
+      return newStates
+    })
+  }, [])
+
+  const handleVideoPlay = React.useCallback((id: string) => {
+    setVideoStates(prev => {
+      const newStates = new Map(prev)
+      newStates.set(id, { ...newStates.get(id)!, isPlaying: true })
+      return newStates
+    })
+  }, [])
+
   React.useEffect(() => {
     if (!isLoading) {
       videoRefs.current.forEach((video, id) => {
-        if (video && !videosLoaded.has(id)) {
-          video.load()
-          video.play().then(() => {
-            setVideosLoaded(prev => new Set(prev).add(id))
-          }).catch(error => console.error('Video playback error:', error))
+        if (video && !videoStates.get(id)?.isPlaying) {
+          const playVideo = async () => {
+            try {
+              await video.play()
+              handleVideoPlay(id)
+            } catch (error) {
+              console.error('Video playback error:', error)
+            }
+          }
+          playVideo()
         }
       })
     }
-  }, [isLoading, videosLoaded])
+  }, [isLoading, videoStates, handleVideoPlay])
 
   const setVideoRef = React.useCallback((el: HTMLVideoElement | null, id: string) => {
     if (el) {
@@ -165,12 +193,11 @@ export function HeroCarousel() {
               <div className="relative h-[60vh] md:h-[75vh] overflow-hidden rounded-md">
                 {item.background.type === 'video' ? (
                   <>
-                    <Image
-                      src={item.background.poster}
-                      alt={item.title}
-                      fill
-                      className={`object-cover transition-opacity duration-300 ${videosLoaded.has(item.id) ? 'opacity-0' : 'opacity-100'}`}
-                      priority={index === 0}
+                    <div 
+                      className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 ${
+                        videoStates.get(item.id)?.isPlaying ? 'opacity-0' : 'opacity-100'
+                      }`}
+                      style={{ backgroundImage: `url(${item.background.poster})` }}
                     />
                     <video
                       ref={(el) => setVideoRef(el, item.id)}
@@ -178,9 +205,11 @@ export function HeroCarousel() {
                       muted
                       loop
                       playsInline
-                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${videosLoaded.has(item.id) ? 'opacity-100' : 'opacity-0'}`}
-                      poster={item.background.poster}
-                      onCanPlayThrough={() => setVideosLoaded(prev => new Set(prev).add(item.id))}
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                        videoStates.get(item.id)?.isPlaying ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      onLoadedData={() => handleVideoLoad(item.id)}
+                      onPlaying={() => handleVideoPlay(item.id)}
                     >
                       <source src={item.background.src} type="video/webm" />
                       <source src={item.background.src.replace('.webm', '.mp4')} type="video/mp4" />
@@ -240,3 +269,4 @@ export function HeroCarousel() {
     </div>
   )
 }
+
