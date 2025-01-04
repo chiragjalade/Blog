@@ -8,11 +8,11 @@ import { preloadAllVideos } from '@/lib/video-cache'
 // Define all video URLs that need to be preloaded
 const ALL_VIDEOS = [
   // Preloader video
-  "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/h2bdp3suzfagpqlleohg.webm",
+  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/h2bdp3suzfagpqlleohg.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823235/h2bdp3suzfagpqlleohg.jpg" },
   // Hero carousel videos
-  "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm",
-  "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm",
-  "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm"
+  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823236/lzin8boldj9y0lwkr2c6.jpg" },
+  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823235/j00jvvlp7qbup2ssn0kp.jpg" },
+  { src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm", poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735823685/udrlrpx0hq4sl3hmon21.jpg" }
 ]
 
 export function Preloader() {

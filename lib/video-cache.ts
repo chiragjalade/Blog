@@ -18,10 +18,29 @@ export async function preloadAndCacheVideo(url: string): Promise<void> {
   }
 }
 
-export async function preloadAllVideos(urls: string[]): Promise<void> {
+export async function preloadAndCacheImage(url: string): Promise<void> {
   try {
-    await Promise.all(urls.map(url => preloadAndCacheVideo(url)));
+    const cache = await caches.open(VIDEO_CACHE_KEY);
+    const cachedResponse = await cache.match(url);
+    
+    if (!cachedResponse) {
+      const response = await fetch(url);
+      if (response.ok) {
+        await cache.put(url, response.clone());
+      }
+    }
   } catch (error) {
-    console.error('Error preloading videos:', error);
+    console.error('Error caching image:', error);
+  }
+}
+
+export async function preloadAllVideos(items: { src: string, poster: string }[]): Promise<void> {
+  try {
+    await Promise.all(items.flatMap(item => [
+      preloadAndCacheVideo(item.src),
+      preloadAndCacheImage(item.poster)
+    ]));
+  } catch (error) {
+    console.error('Error preloading videos and images:', error);
   }
 }
