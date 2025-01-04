@@ -105,7 +105,6 @@ export function SiteHeader() {
   const pathname = usePathname()
 
   const handleLogoClick = () => {
-    // Only trigger preloader when clicking logo
     const win = window as Window & typeof globalThis & {
       startPreloader?: () => void;
     };
@@ -116,24 +115,25 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="fixed top-0 z-50 w-full bg-black/50 backdrop-blur-md h-16">
+      <header className="fixed top-0 z-50 w-full bg-black/70 backdrop-blur-md h-14">
         <div className="container flex h-full items-center justify-between px-4 md:px-6">
-          <div className="flex items-center gap-12">
-            <Link href="/" className="text-xl font-medium text-white" onClick={handleLogoClick}>
-              C27/Blog
-            </Link>
-            <NavigationMenu className="hidden md:block">
-              <NavigationMenuList className="flex space-x-4">
+          <Link href="/" className="text-[0.935rem] font-medium text-white pl-2 lg:pl-16" onClick={handleLogoClick}>
+            C27/Blog
+          </Link>
+          
+          <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
+            <NavigationMenu>
+              <NavigationMenuList className="flex space-x-2">
                 {navItems.map((item) => (
                   <NavigationMenuItem key={item.name}>
                     {item.sections ? (
                       <>
-                        <NavigationMenuTrigger className="text-sm text-white/90 hover:text-white px-4 py-2 transition-colors bg-transparent">
+                        <NavigationMenuTrigger className="text-xs text-white/90 hover:text-white px-3 py-1.5 transition-colors bg-transparent">
                           {item.name}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <div className="w-[1120px] p-6">
-                            <div className="grid grid-cols-4 gap-6">
+                          <div className="w-[800px] p-6">
+                            <div className="grid grid-cols-3 gap-6">
                               {item.sections.map((section, idx) => (
                                 <div key={idx} className="space-y-4">
                                   <h3 className="text-sm font-medium text-white/60">
@@ -186,7 +186,7 @@ export function SiteHeader() {
                     ) : (
                       <Link
                         href={item.href}
-                        className="text-sm text-white/90 hover:text-white px-4 py-2 transition-colors"
+                        className="text-xs text-white/90 hover:text-white px-3 py-1.5 transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -196,21 +196,22 @@ export function SiteHeader() {
               </NavigationMenuList>
             </NavigationMenu>
           </div>
-          <div className="flex items-center gap-2">
+
+          <div className="flex items-center gap-2 pr-2 lg:pr-16">
             {pathname !== '/search' && (
               <button
-                className="rounded-full p-2 hover:bg-white/10"
+                className="rounded-full p-1.5 hover:bg-white/10"
                 onClick={() => setSearchOpen(true)}
               >
-                <Search className="h-5 w-5 text-white" />
+                <Search className="h-[1.1rem] w-[1.1rem] text-white" />
                 <span className="sr-only">Search</span>
               </button>
             )}
             <button
-              className="rounded-full p-2 hover:bg-white/10 md:hidden"
+              className="rounded-full p-1.5 hover:bg-white/10 md:hidden"
               onClick={() => setMenuOpen(true)}
             >
-              <Menu className="h-5 w-5 text-white" />
+              <Menu className="h-[1.1rem] w-[1.1rem] text-white" />
               <span className="sr-only">Menu</span>
             </button>
           </div>
