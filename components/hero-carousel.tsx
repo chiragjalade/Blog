@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,7 +10,6 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel"
 import { useLoading } from '@/context/loading-context'
-import { preloadAllVideos } from '@/lib/video-cache'
 
 const heroItems = [
   {
@@ -21,8 +19,6 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945674/hero-carousel-preload-images/jwqdqj2hr0yqkukocaa3.png",
-      fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/sora",
   },
@@ -33,8 +29,6 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945787/hero-carousel-preload-images/a1jqcdhp5qxlirqdoks1.png",
-      fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/chatgpt",
   },
@@ -45,8 +39,6 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945879/hero-carousel-preload-images/lrwbj2hk1vfrna0dngau.png",
-      fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/dalle",
   },
@@ -60,15 +52,6 @@ export function HeroCarousel() {
   const autoplayRef = React.useRef<NodeJS.Timeout | null>(null)
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
   const [isPaused, setIsPaused] = React.useState(false)
-  const [videosLoaded, setVideosLoaded] = React.useState<Set<string>>(new Set())
-
-  React.useEffect(() => {
-    // Preload all videos and poster images
-    preloadAllVideos(heroItems.map(item => ({
-      src: item.background.src,
-      poster: item.background.poster
-    })))
-  }, [])
 
   const startAutoplay = React.useCallback(() => {
     if (autoplayRef.current) {
@@ -109,16 +92,14 @@ export function HeroCarousel() {
 
   React.useEffect(() => {
     if (!isLoading) {
-      videoRefs.current.forEach((video, id) => {
-        if (video && !videosLoaded.has(id)) {
+      videoRefs.current.forEach((video) => {
+        if (video) {
           video.load()
-          video.play().then(() => {
-            setVideosLoaded(prev => new Set(prev).add(id))
-          }).catch(error => console.error('Video playback error:', error))
+          video.play().catch(error => console.error('Video playback error:', error))
         }
       })
     }
-  }, [isLoading, videosLoaded])
+  }, [isLoading])
 
   const setVideoRef = React.useCallback((el: HTMLVideoElement | null, id: string) => {
     if (el) {
@@ -163,39 +144,18 @@ export function HeroCarousel() {
               onClick={resetAutoplay}
             >
               <div className="relative h-[60vh] md:h-[75vh] overflow-hidden rounded-md">
-                {item.background.type === 'video' ? (
-                  <>
-                    <Image
-                      src={item.background.poster}
-                      alt={item.title}
-                      fill
-                      className={`object-cover transition-opacity duration-300 ${videosLoaded.has(item.id) ? 'opacity-0' : 'opacity-100'}`}
-                      priority={index === 0}
-                    />
-                    <video
-                      ref={(el) => setVideoRef(el, item.id)}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${videosLoaded.has(item.id) ? 'opacity-100' : 'opacity-0'}`}
-                      poster={item.background.poster}
-                      onCanPlayThrough={() => setVideosLoaded(prev => new Set(prev).add(item.id))}
-                    >
-                      <source src={item.background.src} type="video/webm" />
-                      <source src={item.background.src.replace('.webm', '.mp4')} type="video/mp4" />
-                    </video>
-                    <div className="absolute inset-0 bg-black/20 rounded-xl" />
-                  </>
-                ) : (
-                  <Image
-                    src={item.background.src}
-                    alt={item.title}
-                    fill
-                    className="object-cover rounded-xl"
-                    priority={index === 0}
-                  />
-                )}
+                <video
+                  ref={(el) => setVideoRef(el, item.id)}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <source src={item.background.src} type="video/webm" />
+                  <source src={item.background.src.replace('.webm', '.mp4')} type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-black/20 rounded-xl" />
                 <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                   <div 
                     className={`text-center transition-all duration-1000 ease-out ${
