@@ -31,7 +31,7 @@ export function ProductCarousel({ title, items }: CarouselProps) {
 
   return (
     <section className="py-4 md:py-8">
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 sm:px-6 lg:px-8">
         <div className="mb-4 md:mb-6 flex items-center justify-between">
           <h2 className="text-2xl md:text-4xl font-medium text-white">
             {title}
@@ -54,7 +54,7 @@ export function ProductCarousel({ title, items }: CarouselProps) {
           </div>
         </div>
       </div>
-      <div className="w-screen relative overflow-hidden left-1/2 right-1/2 -mx-[50vw] px-4 sm:px-0">
+      <div className="relative overflow-hidden">
         <Carousel
           setApi={setApi}
           opts={{
@@ -65,14 +65,14 @@ export function ProductCarousel({ title, items }: CarouselProps) {
           }}
           className="w-full"
         >
-          <CarouselContent className="-ml-4 md:pl-6">
+          <CarouselContent className="ml-0 sm:ml-6 lg:ml-8 snap-x snap-mandatory">
             {items.map((item, index) => (
               <CarouselItem 
                 key={index} 
-                className="pl-4 basis-3/4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 snap-start"
+                className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start"
               >
                 <Link href={item.link} className="block">
-                  <div className="group relative aspect-[3/4] overflow-hidden rounded-lg">
+                  <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md">
                     {item.background ? (
                       item.background.type === 'video' ? (
                         <>
