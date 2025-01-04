@@ -1,14 +1,26 @@
+'use client'
+
+import { useState } from 'react'
 import { Suspense } from 'react'
 import { SearchContent } from '@/components/search-content'
-import { SiteHeader } from "@/components/site-header"
+import { SearchOverlay } from '@/components/search-overlay'
+import { useRouter } from 'next/navigation'
 
 export default function SearchPage() {
+  const [searchOpen, setSearchOpen] = useState(true)
+  const router = useRouter()
+
+  const handleCloseSearch = () => {
+    setSearchOpen(false)
+    router.back()
+  }
+
   return (
     <>
-      <SiteHeader />
       <Suspense fallback={<SearchSkeleton />}>
         <SearchContent />
       </Suspense>
+      <SearchOverlay open={searchOpen} onClose={handleCloseSearch} />
     </>
   )
 }
