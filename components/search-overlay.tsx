@@ -68,4 +68,3 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
     </div>
   )
 }
-
