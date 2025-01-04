@@ -11,9 +11,8 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { SearchOverlay } from "./search-overlay"
 import { MobileMenu } from "./mobile-menu"
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { type NavigationItem } from "@/types/nav"
 
 const navItems: NavigationItem[] = [
@@ -100,9 +99,9 @@ const navItems: NavigationItem[] = [
 ]
 
 export function SiteHeader() {
-  const [searchOpen, setSearchOpen] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
   const pathname = usePathname()
+  const router = useRouter()
 
   const handleLogoClick = () => {
     const win = window as Window & typeof globalThis & {
@@ -113,113 +112,114 @@ export function SiteHeader() {
     }
   }
 
+  const handleSearchClick = () => {
+    router.push('/search')
+  }
+
   return (
-    <>
-      <header className="fixed top-0 z-50 w-full bg-black/70 backdrop-blur-md h-14">
-        <div className="container flex h-full items-center justify-between px-4 md:px-6">
-          <Link href="/" className="text-[0.935rem] font-medium text-white pl-2 lg:pl-16" onClick={handleLogoClick}>
-            C27/Blog
-          </Link>
-          
-          <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
-            <NavigationMenu>
-              <NavigationMenuList className="flex space-x-2">
-                {navItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
-                    {item.sections ? (
-                      <>
-                        <NavigationMenuTrigger className="text-xs text-white/90 hover:text-white px-3 py-1.5 transition-colors bg-transparent">
-                          {item.name}
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <div className="w-[800px] p-6">
-                            <div className="grid grid-cols-3 gap-6">
-                              {item.sections.map((section, idx) => (
-                                <div key={idx} className="space-y-4">
-                                  <h3 className="text-sm font-medium text-white/60">
-                                    {section.title}
-                                  </h3>
-                                  {section.items && (
-                                    <ul className="space-y-4">
-                                      {section.items.map((subItem) => (
-                                        <li key={subItem.name}>
-                                          <Link
-                                            href={subItem.href}
-                                            className="group flex items-center gap-1 text-sm text-white/90 hover:text-white transition-colors"
-                                          >
-                                            {subItem.name}
-                                            {subItem.external && (
-                                              <ArrowUpRight className="h-3 w-3 opacity-50 group-hover:opacity-100 transition-opacity" />
-                                            )}
-                                          </Link>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  )}
-                                  {section.featured && (
-                                    <Link 
-                                      href={section.featured.href}
-                                      className="block aspect-[2/1] overflow-hidden rounded-lg"
-                                    >
-                                      <div className="relative h-full w-full">
-                                        <Image
-                                          src={section.featured.image}
-                                          alt={section.featured.title}
-                                          fill
-                                          className="object-cover"
-                                        />
-                                        <div className="absolute inset-0 bg-black/50" />
-                                        <div className="absolute bottom-0 left-0 right-0 p-4">
-                                          <div className="text-lg font-medium text-white">
-                                            {section.featured.title}
-                                          </div>
+    <header className="fixed top-0 z-50 w-full bg-black/70 backdrop-blur-md h-14">
+      <div className="container flex h-full items-center justify-between px-4 md:px-6">
+        <Link href="/" className="text-[0.935rem] font-medium text-white pl-2 lg:pl-16" onClick={handleLogoClick}>
+          C27/Blog
+        </Link>
+        
+        <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
+          <NavigationMenu>
+            <NavigationMenuList className="flex space-x-2">
+              {navItems.map((item) => (
+                <NavigationMenuItem key={item.name}>
+                  {item.sections ? (
+                    <>
+                      <NavigationMenuTrigger className="text-xs text-white/90 hover:text-white px-3 py-1.5 transition-colors bg-transparent">
+                        {item.name}
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-[800px] p-6">
+                          <div className="grid grid-cols-3 gap-6">
+                            {item.sections.map((section, idx) => (
+                              <div key={idx} className="space-y-4">
+                                <h3 className="text-sm font-medium text-white/60">
+                                  {section.title}
+                                </h3>
+                                {section.items && (
+                                  <ul className="space-y-4">
+                                    {section.items.map((subItem) => (
+                                      <li key={subItem.name}>
+                                        <Link
+                                          href={subItem.href}
+                                          className="group flex items-center gap-1 text-sm text-white/90 hover:text-white transition-colors"
+                                        >
+                                          {subItem.name}
+                                          {subItem.external && (
+                                            <ArrowUpRight className="h-3 w-3 opacity-50 group-hover:opacity-100 transition-opacity" />
+                                          )}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                                {section.featured && (
+                                  <Link 
+                                    href={section.featured.href}
+                                    className="block aspect-[2/1] overflow-hidden rounded-lg"
+                                  >
+                                    <div className="relative h-full w-full">
+                                      <Image
+                                        src={section.featured.image}
+                                        alt={section.featured.title}
+                                        fill
+                                        className="object-cover"
+                                      />
+                                      <div className="absolute inset-0 bg-black/50" />
+                                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                                        <div className="text-lg font-medium text-white">
+                                          {section.featured.title}
                                         </div>
                                       </div>
-                                    </Link>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
+                                    </div>
+                                  </Link>
+                                )}
+                              </div>
+                            ))}
                           </div>
-                        </NavigationMenuContent>
-                      </>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className="text-xs text-white/90 hover:text-white px-3 py-1.5 transition-colors"
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
-
-          <div className="flex items-center gap-2 pr-2 lg:pr-16">
-            {pathname !== '/search' && (
-              <button
-                className="rounded-full p-1.5 hover:bg-white/10"
-                onClick={() => setSearchOpen(true)}
-              >
-                <Search className="h-[1.1rem] w-[1.1rem] text-white" />
-                <span className="sr-only">Search</span>
-              </button>
-            )}
-            <button
-              className="rounded-full p-1.5 hover:bg-white/10 md:hidden"
-              onClick={() => setMenuOpen(true)}
-            >
-              <Menu className="h-[1.1rem] w-[1.1rem] text-white" />
-              <span className="sr-only">Menu</span>
-            </button>
-          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="text-xs text-white/90 hover:text-white px-3 py-1.5 transition-colors"
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
-      </header>
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+
+        <div className="flex items-center gap-2 pr-2 lg:pr-16">
+          {pathname !== '/search' && (
+            <button
+              className="rounded-full p-1.5 hover:bg-white/10"
+              onClick={handleSearchClick}
+            >
+              <Search className="h-[1.1rem] w-[1.1rem] text-white" />
+              <span className="sr-only">Search</span>
+            </button>
+          )}
+          <button
+            className="rounded-full p-1.5 hover:bg-white/10 md:hidden"
+            onClick={() => setMenuOpen(true)}
+          >
+            <Menu className="h-[1.1rem] w-[1.1rem] text-white" />
+            <span className="sr-only">Menu</span>
+          </button>
+        </div>
+      </div>
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} navItems={navItems} />
-    </>
+    </header>
   )
 }
 
