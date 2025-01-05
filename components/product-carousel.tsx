@@ -116,11 +116,16 @@ export function ProductCarousel({ title, items }: CarouselProps) {
             ))}
             <CarouselItem className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start">
               <Link href={`/archive/${title.toLowerCase()}`} className="block">
-                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
-                  <div className="text-center">
-                    <h3 className="text-xl font-medium text-white mb-2">See All</h3>
-                    <ArrowRight className="h-6 w-6 text-white mx-auto" />
+                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-gray-900 to-gray-800">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center transform transition-transform group-hover:scale-110">
+                      <h3 className="text-2xl font-bold text-white mb-4">See All</h3>
+                      <div className="w-12 h-12 mx-auto rounded-full bg-white/10 flex items-center justify-center">
+                        <ArrowRight className="h-6 w-6 text-white" />
+                      </div>
+                    </div>
                   </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                 </div>
               </Link>
             </CarouselItem>
