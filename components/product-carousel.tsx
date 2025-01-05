@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import {
   Carousel,
   CarouselContent,
@@ -114,6 +114,16 @@ export function ProductCarousel({ title, items }: CarouselProps) {
                 </Link>
               </CarouselItem>
             ))}
+            <CarouselItem className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start">
+              <Link href={`/archive/${title.toLowerCase()}`} className="block">
+                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+                  <div className="text-center">
+                    <h3 className="text-xl font-medium text-white mb-2">See All</h3>
+                    <ArrowRight className="h-6 w-6 text-white mx-auto" />
+                  </div>
+                </div>
+              </Link>
+            </CarouselItem>
           </CarouselContent>
         </Carousel>
       </div>

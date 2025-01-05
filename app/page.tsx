@@ -1,3 +1,7 @@
+'use client'
+
+import { useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { HeroCarousel } from "@/components/hero-carousel"
 import { ProductCarousel } from "@/components/product-carousel"
 import { SiteHeader } from "@/components/site-header"
@@ -126,10 +130,19 @@ const research = [
 ]
 
 export default function Home() {
+  useEffect(() => {
+    // Any client-side effects can go here
+  }, [])
+
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <SiteHeader />
-      <main className="min-h-screen bg-black pt-16"> {/* Added pt-16 for top padding */}
+      <main className="min-h-screen bg-black pt-16">
         <div className="container mx-auto px-0 py-4">
           <HeroCarousel />
         </div>
@@ -139,6 +152,7 @@ export default function Home() {
         </div>
       </main>
       <SiteFooter />
-    </>
+    </motion.div>
   )
 }
+
