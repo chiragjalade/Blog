@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { products, research, ContentItem } from '@/config/content'
 import { SiteHeader } from '@/components/site-header'
 
@@ -14,6 +15,7 @@ interface ArchivePageContentProps {
 }
 
 export function ArchivePageContent({ initialCategory }: ArchivePageContentProps) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState(initialCategory)
   const [items, setItems] = useState<ContentItem[]>(() => 
     activeTab === 'products' ? products : research
@@ -22,6 +24,11 @@ export function ArchivePageContent({ initialCategory }: ArchivePageContentProps)
   useEffect(() => {
     setItems(activeTab === 'products' ? products : research)
   }, [activeTab])
+
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault()
+    router.back()
+  }
 
   return (
     <>
@@ -35,13 +42,13 @@ export function ArchivePageContent({ initialCategory }: ArchivePageContentProps)
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
-            <Link
-              href="/"
+            <button
+              onClick={handleBack}
               className="inline-flex items-center text-sm text-white/60 hover:text-white transition-colors"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
-            </Link>
+            </button>
           </div>
           <h1 className="text-4xl font-bold text-white mb-8">Archive</h1>
           <div className="flex space-x-4 mb-8">
@@ -66,7 +73,7 @@ export function ArchivePageContent({ initialCategory }: ArchivePageContentProps)
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
             >
               {items.map((item, index) => (
                 <motion.div
@@ -74,17 +81,17 @@ export function ArchivePageContent({ initialCategory }: ArchivePageContentProps)
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="aspect-[3/4] relative overflow-hidden rounded-lg"
+                  className="aspect-video sm:aspect-[3/4] relative overflow-hidden rounded-lg"
                 >
                   <Link href={`/${activeTab}/${item.id}`} className="block h-full">
                     <div 
                       className="absolute inset-0 w-full h-full"
                       style={{ background: item.gradient }}
                     />
-                    <div className="absolute inset-0 bg-black/50 p-6 flex flex-col justify-end">
-                      <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                      <p className="text-white/60 text-sm mb-4">{item.date}</p>
-                      <p className="text-white/80 line-clamp-3">{item.content}</p>
+                    <div className="absolute inset-0 bg-black/50 p-4 sm:p-6 flex flex-col justify-end">
+                      <h3 className="text-lg sm:text-xl font-semibold text-white mb-1 sm:mb-2">{item.title}</h3>
+                      <p className="text-white/60 text-xs sm:text-sm mb-2 sm:mb-4">{item.date}</p>
+                      <p className="text-white/80 text-sm line-clamp-2 sm:line-clamp-3">{item.content}</p>
                     </div>
                   </Link>
                 </motion.div>
