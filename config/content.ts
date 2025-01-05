@@ -138,3 +138,4 @@ export const allContent = [
   ...products.map(item => ({ ...item, type: 'Product' as const })),
   ...research.map(item => ({ ...item, type: 'Research' as const })),
 ]
+
