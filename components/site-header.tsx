@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { SearchOverlay } from "./search-overlay"
 import { MobileMenu } from "./mobile-menu"
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { type NavigationItem } from "@/types/nav"
 
 const navItems: NavigationItem[] = [
@@ -103,19 +103,13 @@ export function SiteHeader() {
   const [searchOpen, setSearchOpen] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
   const pathname = usePathname()
-  const router = useRouter()
 
-  const handleLogoClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    if (pathname !== '/') {
-      router.push('/')
-    } else {
-      const win = window as Window & typeof globalThis & {
-        startPreloader?: () => void;
-      };
-      if (typeof window !== 'undefined' && win.startPreloader) {
-        win.startPreloader();
-      }
+  const handleLogoClick = () => {
+    const win = window as Window & typeof globalThis & {
+      startPreloader?: () => void;
+    };
+    if (typeof window !== 'undefined' && win.startPreloader) {
+      win.startPreloader();
     }
   }
 

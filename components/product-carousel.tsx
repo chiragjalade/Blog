@@ -23,22 +23,11 @@ interface CarouselProps {
     }
     gradient?: string
     link: string
-    description?: string
   }[]
 }
 
 export function ProductCarousel({ title, items }: CarouselProps) {
   const [api, setApi] = React.useState<CarouselApi | null>(null)
-
-  // Add a "See All" item to the end of the items array
-  const allItems = [
-    ...items,
-    {
-      title: "See All",
-      link: `/see-all/${title.toLowerCase().replace(/\s+/g, '-')}`,
-      gradient: "linear-gradient(to bottom right, #4F46E5, #7C3AED)", // Adjust this gradient as needed
-    },
-  ]
 
   return (
     <section className="py-4 md:py-8 overflow-hidden">
@@ -77,7 +66,7 @@ export function ProductCarousel({ title, items }: CarouselProps) {
           className="w-full"
         >
           <CarouselContent className="ml-0 sm:ml-6 lg:ml-8 snap-x snap-mandatory">
-            {allItems.map((item, index) => (
+            {items.map((item, index) => (
               <CarouselItem 
                 key={index} 
                 className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start"
