@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import {
   Carousel,
   CarouselContent,
@@ -24,9 +24,10 @@ interface CarouselProps {
     gradient?: string
     link: string
   }[]
+  seeAllLink: string
 }
 
-export function ProductCarousel({ title, items }: CarouselProps) {
+export function ProductCarousel({ title, items, seeAllLink }: CarouselProps) {
   const [api, setApi] = React.useState<CarouselApi | null>(null)
 
   return (
@@ -114,6 +115,16 @@ export function ProductCarousel({ title, items }: CarouselProps) {
                 </Link>
               </CarouselItem>
             ))}
+            <CarouselItem className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start">
+              <Link href={seeAllLink} className="block">
+                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-purple-600 to-blue-500">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                    <h3 className="text-2xl font-medium text-white mb-2">See all</h3>
+                    <ArrowRight className="h-8 w-8 text-white" />
+                  </div>
+                </div>
+              </Link>
+            </CarouselItem>
           </CarouselContent>
         </Carousel>
       </div>

@@ -134,11 +134,12 @@ export default function Home() {
           <HeroCarousel />
         </div>
         <div className="space-y-2 py-4">
-          <ProductCarousel title="Products" items={products} />
-          <ProductCarousel title="Research" items={research} />
+          <ProductCarousel title="Products" items={products} seeAllLink="/products/all" />
+          <ProductCarousel title="Research" items={research} seeAllLink="/research/all" />
         </div>
       </main>
       <SiteFooter />
     </>
   )
 }
+
