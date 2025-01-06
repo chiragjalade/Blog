@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
@@ -10,49 +10,49 @@ import { SiteHeader } from '@/components/site-header'
 
 const tabs = ['Products', 'Research']
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
-    },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      damping: 15,
-    },
-  },
-}
-
-interface ArchivePageContentProps {
-  initialCategory: string
-}
-
-export function ArchivePageContent({ initialCategory }: ArchivePageContentProps) {
+export function ArchivePageContent({ initialCategory }: { initialCategory: string }) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState(initialCategory)
   const [items, setItems] = useState<ContentItem[]>(() => 
     activeTab === 'products' ? products : research
   )
 
+  const containerVariants = useMemo(() => ({
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
+  }), [])
+
+  const itemVariants = useMemo(() => ({
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  }), [])
+
   useEffect(() => {
     setItems(activeTab === 'products' ? products : research)
   }, [activeTab])
 
-  const handleBack = (e: React.MouseEvent) => {
+  const handleBack = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
     router.back()
-  }
+  }, [router])
+
+  const handleTabClick = useCallback((tab: string) => {
+    setActiveTab(tab.toLowerCase())
+  }, [])
 
   return (
     <>
@@ -96,7 +96,7 @@ export function ArchivePageContent({ initialCategory }: ArchivePageContentProps)
             {tabs.map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab.toLowerCase())}
+                onClick={() => handleTabClick(tab)}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeTab === tab.toLowerCase()
                     ? 'bg-white text-black'

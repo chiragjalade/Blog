@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/carousel"
 import { useLoading } from '@/context/loading-context'
 import { preloadAllVideos } from '@/lib/video-cache'
+import { OptimizedImage } from '@/components/optimized-image'
 
 const heroItems = [
   {
@@ -22,7 +23,7 @@ const heroItems = [
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm",
       poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945674/hero-carousel-preload-images/jwqdqj2hr0yqkukocaa3.png",
-      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945674/hero-carousel-preload-images/jwqdqj2hr0yqkukocaa3.png",
+      fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/sora",
   },
@@ -34,7 +35,7 @@ const heroItems = [
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm",
       poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945787/hero-carousel-preload-images/a1jqcdhp5qxlirqdoks1.png",
-      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945787/hero-carousel-preload-images/a1jqcdhp5qxlirqdoks1.png",
+      fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/chatgpt",
   },
@@ -46,7 +47,7 @@ const heroItems = [
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm",
       poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945879/hero-carousel-preload-images/lrwbj2hk1vfrna0dngau.png",
-      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945879/hero-carousel-preload-images/lrwbj2hk1vfrna0dngau.png",
+      fallback: "/placeholder.svg?height=800&width=1600",
     },
     link: "/dalle",
   },
@@ -61,6 +62,8 @@ export function HeroCarousel() {
   const videoRefs = React.useRef<Map<string, HTMLVideoElement>>(new Map())
   const [isPaused, setIsPaused] = React.useState(false)
   const [videoStates, setVideoStates] = React.useState<Map<string, { isLoaded: boolean, isPlaying: boolean, hasError: boolean }>>(new Map())
+
+  const memoizedHeroItems = React.useMemo(() => heroItems, [])
 
   // Initialize video states
   React.useEffect(() => {
@@ -167,18 +170,18 @@ export function HeroCarousel() {
     }
   }, [playVideo])
 
-  const handleMouseEnter = (event: React.MouseEvent) => {
+  const handleMouseEnter = React.useCallback((event: React.MouseEvent) => {
     if (event.currentTarget === event.target) {
       setIsPaused(true);
     }
-  }
+  }, [])
 
-  const handleMouseLeave = (event: React.MouseEvent) => {
+  const handleMouseLeave = React.useCallback((event: React.MouseEvent) => {
     if (event.currentTarget === event.target) {
       setIsPaused(false);
       startAutoplay();
     }
-  }
+  }, [startAutoplay])
 
   return (
     <div 
@@ -195,7 +198,7 @@ export function HeroCarousel() {
         }}
       >
         <CarouselContent className="-ml-2 md:-ml-4 overflow-visible">
-          {heroItems.map((item, index) => (
+          {memoizedHeroItems.map((item, index) => (
             <CarouselItem 
               key={index} 
               className="pl-4 basis-[85%] md:basis-[85%] overflow-visible"
@@ -226,11 +229,12 @@ export function HeroCarousel() {
                       Your browser does not support the video tag.
                     </video>
                     {videoStates.get(item.id)?.hasError && (
-                      <Image
+                      <OptimizedImage
                         src={item.background.fallback}
                         alt={item.title}
                         fill
                         className="object-cover"
+                        aboveTheFold={index === 0}
                       />
                     )}
                     <div className="absolute inset-0 bg-black/20 rounded-xl" />

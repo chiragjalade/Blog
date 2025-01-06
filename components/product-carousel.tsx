@@ -10,6 +10,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import { useMemo, useCallback } from 'react'
 
 interface CarouselProps {
   title: string
@@ -29,6 +30,16 @@ interface CarouselProps {
 export function ProductCarousel({ title, items }: CarouselProps) {
   const [api, setApi] = React.useState<CarouselApi | null>(null)
 
+  const carouselOptions = useMemo(() => ({
+    align: "start" as const,
+    loop: false,
+    dragFree: false,
+    containScroll: "trimSnaps" as const,
+  }), [])
+
+  const handlePrevClick = useCallback(() => api?.scrollPrev(), [api])
+  const handleNextClick = useCallback(() => api?.scrollNext(), [api])
+
   return (
     <section className="py-4 md:py-8 overflow-hidden">
       <div className="container px-4 sm:px-6 lg:px-8">
@@ -38,14 +49,14 @@ export function ProductCarousel({ title, items }: CarouselProps) {
           </h2>
           <div className="hidden md:flex gap-4">
             <button
-              onClick={() => api?.scrollPrev()}
+              onClick={handlePrevClick}
               className="rounded-full p-2 hover:bg-white/10"
               aria-label="Previous item"
             >
               <ChevronLeft className="h-6 w-6 text-white" />
             </button>
             <button
-              onClick={() => api?.scrollNext()}
+              onClick={handleNextClick}
               className="rounded-full p-2 hover:bg-white/10"
               aria-label="Next item"
             >
@@ -57,12 +68,7 @@ export function ProductCarousel({ title, items }: CarouselProps) {
       <div className="relative">
         <Carousel
           setApi={setApi}
-          opts={{
-            align: "start",
-            loop: false,
-            dragFree: false,
-            containScroll: "trimSnaps",
-          }}
+          opts={carouselOptions}
           className="w-full"
         >
           <CarouselContent className="ml-0 sm:ml-6 lg:ml-8 snap-x snap-mandatory">
@@ -116,16 +122,11 @@ export function ProductCarousel({ title, items }: CarouselProps) {
             ))}
             <CarouselItem className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start">
               <Link href={`/archive/${title.toLowerCase()}`} className="block">
-                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-gray-900 to-gray-800">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center transform transition-transform group-hover:scale-110">
-                      <h3 className="text-2xl font-bold text-white mb-4">See All</h3>
-                      <div className="w-12 h-12 mx-auto rounded-full bg-white/10 flex items-center justify-center">
-                        <ArrowRight className="h-6 w-6 text-white" />
-                      </div>
-                    </div>
+                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center transition-transform duration-300 hover:scale-105">
+                  <div className="text-center">
+                    <h3 className="text-xl font-medium text-white mb-2">See All</h3>
+                    <ArrowRight className="h-6 w-6 text-white mx-auto transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                 </div>
               </Link>
             </CarouselItem>
