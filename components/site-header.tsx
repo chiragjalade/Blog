@@ -117,7 +117,7 @@ export function SiteHeader() {
     <>
       <header className="fixed top-0 z-50 w-full bg-black/30 backdrop-blur-md h-14">
         <div className="container flex h-full items-center justify-between px-4 md:px-6">
-          <Link href="/" className="text-[0.935rem] font-medium text-white pl-2 lg:pl-16" onClick={handleLogoClick}>
+          <Link href="/" className="text-[0.935rem] font-medium text-white px-2 lg:px-16" onClick={handleLogoClick}>
             C27/Blog
           </Link>
           

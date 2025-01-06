@@ -31,11 +31,11 @@ export function MobileMenu({ open, onClose, navItems }: MobileMenuProps) {
       >
         <div className="flex h-16 items-center justify-between px-4">
           <Link href="/" className="text-xl font-medium text-white" onClick={onClose}>
-            OpenAI
+            C27/Blog
           </Link>
           <button
             onClick={onClose}
-            className="rounded-full p-2 hover:bg-white/10"
+            className="rounded-full p-2 hover:bg-white/10 flex items-center justify-center"
           >
             <X className="h-5 w-5 text-white" />
             <span className="sr-only">Close menu</span>
@@ -49,7 +49,7 @@ export function MobileMenu({ open, onClose, navItems }: MobileMenuProps) {
                   <>
                     <button
                       onClick={() => setExpanded(expanded === item.name ? null : item.name)}
-                      className="flex w-full items-center justify-between py-4 text-xl text-white"
+                      className="flex w-full items-center justify-between py-4 pr-2 text-xl text-white"
                     >
                       {item.name}
                       <ChevronDown
