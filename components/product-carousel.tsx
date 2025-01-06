@@ -23,6 +23,7 @@ interface CarouselProps {
       fallback?: string
     }
     gradient?: string
+    overlayImage?: string
     link: string
   }[]
 }
@@ -79,36 +80,29 @@ export function ProductCarousel({ title, items }: CarouselProps) {
               >
                 <Link href={item.link} className="block">
                   <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md">
-                    {item.background ? (
-                      item.background.type === 'video' ? (
-                        <>
-                          <video
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            className="absolute inset-0 w-full h-full object-cover"
-                            poster={item.background.fallback}
-                          >
-                            <source src={item.background.src} type="video/mp4" />
-                          </video>
-                          <div className="absolute inset-0 bg-black/20" />
-                        </>
-                      ) : (
+                    {/* Base gradient background */}
+                    <div
+                      className="absolute inset-0 transition-transform duration-300 group-hover:scale-105"
+                      style={{ background: item.gradient }}
+                    />
+                    
+                    {/* Optional overlay image */}
+                    {item.overlayImage && (
+                      <div className="absolute inset-0 z-10">
                         <Image
-                          src={item.background.src}
+                          src={item.overlayImage}
                           alt={item.title}
                           fill
-                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          priority={index === 0}
                         />
-                      )
-                    ) : (
-                      <div
-                        className="absolute inset-0 transition-transform duration-300 group-hover:scale-105"
-                        style={{ background: item.gradient }}
-                      />
+                        <div className="absolute inset-0 bg-black/20" />
+                      </div>
                     )}
-                    <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+
+                    {/* Content overlay */}
+                    <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent z-20">
                       {item.date && (
                         <div className="mb-1 text-sm text-white/80">{item.date}</div>
                       )}
@@ -122,8 +116,8 @@ export function ProductCarousel({ title, items }: CarouselProps) {
             ))}
             <CarouselItem className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start">
               <Link href={`/archive/${title.toLowerCase()}`} className="block">
-                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center transition-transform duration-300 hover:scale-105">
-                  <div className="text-center">
+                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center">
+                  <div className="text-center transition-all duration-300 group-hover:scale-110">
                     <h3 className="text-xl font-medium text-white mb-2">See All</h3>
                     <ArrowRight className="h-6 w-6 text-white mx-auto transition-transform duration-300 group-hover:translate-x-1" />
                   </div>

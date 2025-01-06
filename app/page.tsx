@@ -6,74 +6,49 @@ import { HeroCarousel } from "@/components/hero-carousel"
 import { ProductCarousel } from "@/components/product-carousel"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Globe, Pencil } from 'lucide-react'
 
 const products = [
   {
     title: "Sora is here",
     gradient: "linear-gradient(to bottom right, #9333ea, #6b21a8)",
-    overlay: (
-      <div className="rounded-lg bg-black/20 backdrop-blur-sm px-4 py-2 flex items-center gap-2 text-white text-sm">
-        <span>Describe your video...</span>
-        <div className="flex items-center gap-2 ml-4">
-          <span>16:9</span>
-          <span>480p</span>
-        </div>
-      </div>
-    ),
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168819/carousel-card-images/un181eqlzwimojzu9ld3.webp",
     link: "/products/sora"
   },
   {
     title: "Introducing ChatGPT Pro",
     gradient: "linear-gradient(to bottom right, #fbbf24, #d97706)",
-    overlay: (
-      <div className="rounded-lg bg-white px-4 py-3 max-w-[80%]">
-        <div className="h-2 w-32 bg-black/10 rounded" />
-        <div className="mt-2 text-sm text-black/60">Issues with mutexes...</div>
-      </div>
-    ),
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168812/carousel-card-images/x7s17hftuv6hf8k5t0c9.webp",
     link: "/products/chatgpt-pro"
   },
   {
     title: "Introducing ChatGPT search",
     gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
-    overlay: (
-      <div className="rounded-full bg-white px-6 py-3 flex items-center gap-2">
-        <Globe className="h-5 w-5 text-blue-500" />
-        <span className="text-lg font-medium text-blue-500">Search</span>
-      </div>
-    ),
     link: "/products/chatgpt-search"
   },
   {
     title: "Introducing canvas",
     subtitle: "A new way to write and code with ChatGPT",
     gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
-    icon: <div className="rounded-full bg-white p-2"><Pencil className="h-5 w-5 text-red-500" /></div>,
     link: "/products/canvas"
   },
   {
     title: "GPT-4 Turbo",
     gradient: "linear-gradient(to bottom right, #4ade80, #16a34a)",
-    icon: <div className="rounded-full bg-white p-2"><Pencil className="h-5 w-5 text-green-500" /></div>,
     link: "/products/gpt-4-turbo"
   },
   {
     title: "DALL·E 3",
     gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
-    icon: <div className="rounded-full bg-white p-2"><Pencil className="h-5 w-5 text-purple-500" /></div>,
     link: "/products/dalle-3"
   },
   {
     title: "API",
     gradient: "linear-gradient(to bottom right, #94a3b8, #475569)",
-    icon: <div className="rounded-full bg-white p-2"><Pencil className="h-5 w-5 text-slate-500" /></div>,
     link: "/products/api"
   },
   {
     title: "Enterprise",
     gradient: "linear-gradient(to bottom right, #2dd4bf, #0d9488)",
-    icon: <div className="rounded-full bg-white p-2"><Pencil className="h-5 w-5 text-teal-500" /></div>,
     link: "/products/enterprise"
   }
 ]
