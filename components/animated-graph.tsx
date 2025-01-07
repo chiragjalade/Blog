@@ -70,7 +70,7 @@ export function AnimatedGraph() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="w-full h-[400px] my-8 p-2 sm:p-8"
     >
-      <div className="relative h-full w-full">
+      <div className="relative h-full w-full flex items-center justify-center">
         {/* Y-axis labels */}
         <div className="absolute left-0 h-[300px] flex flex-col justify-between text-white/60 text-sm">
           {[...Array(5)].map((_, i) => (
