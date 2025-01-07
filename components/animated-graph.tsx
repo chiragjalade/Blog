@@ -62,35 +62,17 @@ export function AnimatedGraph() {
     return (value / maxValue) * graphHeight
   }
 
-  const textVariants = {
-    initial: { 
-      backgroundImage: `linear-gradient(45deg, ${currentGradient.join(', ')})`,
-    },
-    animate: { 
-      backgroundImage: "linear-gradient(45deg, #FFFFFF, #FFFFFF, #FFFFFF)",
-      transition: { duration: 3, delay: 0.2 }
-    }
-  }
-
-  const shineVariants = {
-    initial: { backgroundPosition: "200% 0" },
-    animate: { 
-      backgroundPosition: "-200% 0",
-      transition: { duration: 1.5, repeat: Infinity, ease: "linear" }
-    }
-  }
-
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="w-full h-[400px] my-8 p-4 sm:p-8"
+      className="w-full h-[400px] my-8 p-8"
     >
       <div className="relative h-full w-full">
         {/* Y-axis labels */}
-        <div className="absolute left-0 h-[300px] flex flex-col justify-between text-white/60 text-xs sm:text-sm">
+        <div className="absolute left-0 h-[300px] flex flex-col justify-between text-white/60 text-sm">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="relative h-0">
               {Math.round(maxValue - (i * maxValue / 4))}
@@ -99,7 +81,7 @@ export function AnimatedGraph() {
         </div>
 
         {/* Grid lines */}
-        <div className="absolute left-12 sm:left-16 right-2 sm:right-8 h-[300px] flex flex-col justify-between">
+        <div className="absolute left-16 right-8 h-[300px] flex flex-col justify-between">
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
@@ -109,9 +91,9 @@ export function AnimatedGraph() {
         </div>
 
         {/* Bars */}
-        <div className="absolute left-12 sm:left-16 right-2 sm:right-8 bottom-8 h-[300px] flex items-end justify-around sm:justify-around">
+        <div className="absolute left-16 right-8 bottom-8 h-[300px] flex items-end justify-around sm:justify-around">
           {data.map((item, index) => (
-            <div key={index} className="relative flex-1 mx-0.5 sm:mx-2 w-8 sm:w-auto">
+            <div key={index} className="relative flex-1 mx-[2px] sm:mx-2"> {/* Updated spacing classes */}
               <motion.div
                 initial={{ height: 0 }}
                 animate={inView ? { height: `${calculateBarHeight(item.value)}px` } : { height: 0 }}
@@ -157,22 +139,27 @@ export function AnimatedGraph() {
                     className="absolute left-0 right-0 text-center"
                     style={{ bottom: `${calculateBarHeight(item.value)}px` }}
                   >
-                    <motion.div
+                    <motion.span
                       className="inline-block text-lg sm:text-2xl font-bold relative"
-                      initial="initial"
-                      animate="animate"
-                      variants={textVariants}
+                      animate={{
+                        backgroundImage: [
+                          `linear-gradient(45deg, ${currentGradient.join(', ')})`,
+                          "linear-gradient(45deg, #FFFFFF, #FFFFFF, #FFFFFF)"
+                        ],
+                        transition: { duration: 3, delay: 0.2 }
+                      }}
                       style={{
                         WebkitBackgroundClip: "text",
                         backgroundClip: "text",
                         WebkitTextFillColor: "transparent",
                       }}
                     >
-                      <motion.div
+                      {/* Shine effect directly on text */}
+                      <motion.span
                         className="absolute inset-0"
-                        variants={shineVariants}
-                        initial="initial"
-                        animate="animate"
+                        initial={{ backgroundPosition: "200% 0" }}
+                        animate={{ backgroundPosition: "-200% 0" }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                         style={{
                           backgroundImage: "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)",
                           backgroundSize: "200% 100%",
@@ -183,9 +170,9 @@ export function AnimatedGraph() {
                         }}
                       >
                         {item.value}
-                      </motion.div>
+                      </motion.span>
                       {item.value}
-                    </motion.div>
+                    </motion.span>
                   </motion.div>
                 )}
               </AnimatePresence>
