@@ -109,7 +109,7 @@ export default function GANPage() {
                     variants={itemVariants}
                     className={`text-sm text-white/60 ${inter.className} font-medium`}
                   >
-                    Deep Learning Explained
+                    Chirag Jalade
                   </motion.div>
                 </motion.header>
                 <motion.div 

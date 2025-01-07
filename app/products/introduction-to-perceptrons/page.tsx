@@ -109,7 +109,7 @@ export default function PerceptronPage() {
                     variants={itemVariants}
                     className={`text-sm text-white/60 ${inter.className} font-medium`}
                   >
-                    Neural Network Fundamentals
+                    Chirag Jalade
                   </motion.div>
                 </motion.header>
                 <motion.div 
