@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { products, research, ContentItem } from '@/config/content'
@@ -114,23 +115,34 @@ export function ArchivePageContent({ initialCategory }: { initialCategory: strin
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 px-2"
             >
               {items.map((item) => (
                 <motion.div
                   key={item.id}
                   variants={itemVariants}
-                  className="aspect-video sm:aspect-[3/4] relative overflow-hidden rounded-lg"
+                  className="aspect-[4/5] sm:aspect-[3/4] relative overflow-hidden rounded-lg group"
                 >
                   <Link href={`/${activeTab}/${item.id}`} className="block h-full">
                     <div 
-                      className="absolute inset-0 w-full h-full transition-transform duration-300 hover:scale-105"
+                      className="absolute inset-0 w-full h-full transition-transform duration-700 group-hover:scale-110"
                       style={{ background: item.gradient }}
                     />
-                    <div className="absolute inset-0 bg-black/50 p-4 sm:p-6 flex flex-col justify-end">
-                      <h3 className="text-lg sm:text-xl font-semibold text-white mb-1 sm:mb-2">{item.title}</h3>
-                      <p className="text-white/60 text-xs sm:text-sm mb-2 sm:mb-4">{item.date}</p>
-                      <p className="text-white/80 text-sm line-clamp-2 sm:line-clamp-3">{item.content}</p>
+                    {item.overlayImage && (
+                      <div className="absolute inset-0 w-full h-full transition-transform duration-700 group-hover:scale-110">
+                        <Image
+                          src={item.overlayImage}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/50 p-3 sm:p-4 flex flex-col justify-end z-10">
+                      <h3 className="text-base sm:text-lg font-semibold text-white mb-1">{item.title}</h3>
+                      <p className="text-white/60 text-xs mb-1">{item.date}</p>
+                      <p className="text-white/80 text-xs line-clamp-2">{item.content}</p>
                     </div>
                   </Link>
                 </motion.div>

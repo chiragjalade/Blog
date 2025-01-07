@@ -4,6 +4,7 @@ interface BaseItem {
   content: string
   date: string
   gradient: string
+  overlayImage?: string
 }
 
 export interface Product extends BaseItem {
@@ -21,7 +22,8 @@ export const products: Product[] = [
     content: "Bring your imagination to life with Sora, our new text-to-video model",
     date: "Dec 9, 2024",
     gradient: "linear-gradient(to bottom right, #9333ea, #6b21a8)",
-    type: 'Product'
+    type: 'Product',
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168819/carousel-card-images/un181eqlzwimojzu9ld3.webp"
   },
   {
     id: "chatgpt-pro",
@@ -29,7 +31,8 @@ export const products: Product[] = [
     content: "Get priority access, faster response times, and exclusive features",
     date: "Dec 5, 2024",
     gradient: "linear-gradient(to bottom right, #fbbf24, #d97706)",
-    type: 'Product'
+    type: 'Product',
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168812/carousel-card-images/x7s17hftuv6hf8k5t0c9.webp"
   },
   {
     id: "introduction-to-perceptrons",
@@ -37,7 +40,8 @@ export const products: Product[] = [
     content: "The Building Blocks That Sparked an AI Revolution",
     date: "Nov 15, 2024",
     gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
-    type: 'Product'
+    type: 'Product',
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736280272/carousel-card-images/urkdiyseu5i4mdttzw1s.webp",
   },
   {
     id: "wtf-are-gans",
@@ -45,7 +49,8 @@ export const products: Product[] = [
     content: "Two Neural Networks Walk into a Bar: Understanding Generative Adversarial Networks",
     date: "Oct 20, 2024",
     gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
-    type: 'Product'
+    type: 'Product',
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736281265/carousel-card-images/yppxqo3nye9qs6i5sb65.webp",
   },
   {
     id: "gpt-4-turbo",
@@ -96,7 +101,8 @@ export const research: ResearchItem[] = [
     content: "Understanding how video models simulate physical worlds",
     date: "Feb 15, 2024",
     gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
-    type: 'Research'
+    type: 'Research',
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736280272/carousel-card-images/urkdiyseu5i4mdttzw1s.webp"
   },
   {
     id: "safety-alignment-2",
@@ -104,7 +110,8 @@ export const research: ResearchItem[] = [
     content: "Advancements in ensuring AI systems align with human values",
     date: "Nov 30, 2024",
     gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
-    type: 'Research'
+    type: 'Research',
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736281265/carousel-card-images/yppxqo3nye9qs6i5sb65.webp"
   },
   {
     id: "research-1",

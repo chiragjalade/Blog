@@ -64,6 +64,13 @@ const research = [
     link: "/research/safety-alignment-dec-5"
   },
   {
+    title: "Video generation models",
+    date: "Feb 15, 2024",
+    gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736280272/carousel-card-images/urkdiyseu5i4mdttzw1s.webp",
+    link: "/research/video-models"
+  },
+  {
     title: "Safety & Alignment",
     date: "Nov 30, 2024",
     gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
