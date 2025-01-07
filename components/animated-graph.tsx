@@ -86,11 +86,11 @@ export function AnimatedGraph() {
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="w-full h-[400px] my-8 p-8"
+      className="w-full h-[400px] my-8 p-4 sm:p-8"
     >
       <div className="relative h-full w-full">
         {/* Y-axis labels */}
-        <div className="absolute left-0 h-[300px] flex flex-col justify-between text-white/60 text-sm">
+        <div className="absolute left-0 h-[300px] flex flex-col justify-between text-white/60 text-xs sm:text-sm">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="relative h-0">
               {Math.round(maxValue - (i * maxValue / 4))}
@@ -99,7 +99,7 @@ export function AnimatedGraph() {
         </div>
 
         {/* Grid lines */}
-        <div className="absolute left-16 right-8 h-[300px] flex flex-col justify-between">
+        <div className="absolute left-12 sm:left-16 right-2 sm:right-8 h-[300px] flex flex-col justify-between">
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
@@ -109,9 +109,9 @@ export function AnimatedGraph() {
         </div>
 
         {/* Bars */}
-        <div className="absolute left-16 right-8 bottom-8 h-[300px] flex items-end justify-around sm:justify-around">
+        <div className="absolute left-12 sm:left-16 right-2 sm:right-8 bottom-8 h-[300px] flex items-end justify-around sm:justify-around">
           {data.map((item, index) => (
-            <div key={index} className="relative flex-1 mx-1 sm:mx-2">
+            <div key={index} className="relative flex-1 mx-0.5 sm:mx-2 w-8 sm:w-auto">
               <motion.div
                 initial={{ height: 0 }}
                 animate={inView ? { height: `${calculateBarHeight(item.value)}px` } : { height: 0 }}
