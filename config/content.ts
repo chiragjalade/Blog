@@ -32,17 +32,17 @@ export const products: Product[] = [
     type: 'Product'
   },
   {
-    id: "chatgpt-search",
-    title: "Introducing ChatGPT search",
-    content: "Enhance your search experience with AI-powered results",
+    id: "introduction-to-perceptrons",
+    title: "Introduction to Perceptrons",
+    content: "The Building Blocks That Sparked an AI Revolution",
     date: "Nov 15, 2024",
     gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
     type: 'Product'
   },
   {
-    id: "canvas",
-    title: "Introducing canvas",
-    content: "A new way to write and code with ChatGPT",
+    id: "wtf-are-gans",
+    title: "WTF are GANs?",
+    content: "Two Neural Networks Walk into a Bar: Understanding Generative Adversarial Networks",
     date: "Oct 20, 2024",
     gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
     type: 'Product'

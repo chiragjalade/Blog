@@ -1,0 +1,808 @@
+new changes to make in the project:
+
+
+products/introduction-to-perceptrons/page.tsx:
+'use client'
+
+import { motion, AnimatePresence } from 'framer-motion'
+import Link from "next/link"
+import { useRouter } from 'next/navigation'
+import { ArrowRight, ArrowLeft } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { SiteHeader } from "@/components/site-header"
+import { useState } from 'react'
+import { Inter } from 'next/font/google'
+import { AnimatedGraph } from "@/components/animated-graph"
+
+const inter = Inter({ subsets: ['latin'] })
+
+export default function PerceptronPage() {
+  const router = useRouter()
+  const [isExiting, setIsExiting] = useState(false)
+
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setIsExiting(true)
+  }
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.6, -0.05, 0.01, 0.99],
+        staggerChildren: 0.1
+      }
+    },
+    exit: { 
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.5,
+        ease: [0.6, -0.05, 0.01, 0.99],
+        staggerChildren: 0.05,
+        staggerDirection: -1
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 }
+  }
+
+  return (
+    <>
+      <SiteHeader />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="min-h-screen bg-black"
+      >
+        <AnimatePresence mode="wait" onExitComplete={() => router.back()}>
+          {!isExiting && (
+            <motion.article 
+              key="article"
+              className="container mx-auto max-w-screen-xl px-6 sm:px-4 pt-24 pb-16 md:px-6 md:pt-32 md:pb-24"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <div className="mx-auto max-w-3xl">
+                <motion.div
+                  variants={itemVariants}
+                  className="mb-8"
+                >
+                  <Button
+                    onClick={handleBack}
+                    variant="ghost"
+                    size="sm"
+                    className="text-white hover:bg-white hover:text-black transition-colors duration-200 rounded-full px-4"
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back
+                  </Button>
+                </motion.div>
+                <motion.header variants={itemVariants} className="mb-12 md:mb-16 text-center">
+                  <motion.time 
+                    variants={itemVariants}
+                    dateTime="2024-01-08" 
+                    className="block text-sm text-white/60 mb-4"
+                  >
+                    January 8, 2024
+                  </motion.time>
+                  <motion.h1 
+                    variants={itemVariants}
+                    className="text-4xl md:text-6xl font-medium text-white mb-6"
+                  >
+                    Introduction to Perceptrons
+                  </motion.h1>
+                  <motion.p 
+                    variants={itemVariants}
+                    className="text-xl md:text-2xl text-white/90 mb-4"
+                  >
+                    Understanding the building blocks of neural networks.
+                  </motion.p>
+                  <motion.div
+                    variants={itemVariants}
+                    className={`text-sm text-white/60 ${inter.className} font-medium`}
+                  >
+                    Neural Network Fundamentals
+                  </motion.div>
+                </motion.header>
+                <motion.div 
+                  variants={itemVariants}
+                  className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+                >
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-white text-black hover:bg-white/90 rounded-full px-8"
+                  >
+                    <Link href="#learn-more">Learn more</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="lg"
+                    className="text-white hover:bg-white/10 rounded-full px-8"
+                  >
+                    <Link href="#interactive-demo" className="flex items-center gap-2">
+                      Interactive Demo
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </motion.div>
+                <motion.div 
+                  variants={itemVariants}
+                  className="prose prose-invert mx-auto px-2 sm:px-0"
+                >
+                  <p className="text-lg md:text-xl text-white/90">
+                    Explore the fundamentals of neural networks through our comprehensive guide to perceptrons at{" "}
+                    <Link href="https://neural-fundamentals.com" className="text-white hover:text-white/90 underline underline-offset-4">
+                      neural-fundamentals.com
+                    </Link>
+                    .
+                  </p>
+                  <p className="text-lg md:text-xl text-white/90">
+                    A perceptron is the simplest form of a feedforward neural network. It&apos;s a fundamental building block that helps us understand how artificial neurons process information and make decisions. Through this guide, we&apos;ll explore how perceptrons learn from data and make predictions.
+                  </p>
+                  <p className="text-lg md:text-xl text-white/90">
+                    We&apos;ve created an interactive learning environment where you can experiment with perceptrons and visualize their decision boundaries in real-time.
+                  </p>
+                </motion.div>
+                <motion.div 
+                  variants={itemVariants}
+                  className="prose prose-invert mx-auto px-2 sm:px-0 mt-16"
+                >
+                  <h2 className="text-2xl font-semibold mb-4">Learning Curve Visualization</h2>
+                  <p className="text-lg md:text-xl text-white/90 mb-4">
+                    Watch how a perceptron learns to classify data points over multiple iterations.
+                    The graph below shows the accuracy improvement during the training process:
+                  </p>
+                  <AnimatedGraph />
+                  <p className="text-sm text-white/60 mt-2">
+                    Note: The values represent the classification accuracy over training epochs.
+                    Higher values indicate better performance on the training dataset.
+                  </p>
+                </motion.div>
+              </div>
+            </motion.article>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </>
+  )
+}
+
+
+products/wtf-are-gans/page.tsx:
+'use client'
+
+import { motion, AnimatePresence } from 'framer-motion'
+import Link from "next/link"
+import { useRouter } from 'next/navigation'
+import { ArrowRight, ArrowLeft } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { SiteHeader } from "@/components/site-header"
+import { useState } from 'react'
+import { Inter } from 'next/font/google'
+import { AnimatedGraph } from "@/components/animated-graph"
+
+const inter = Inter({ subsets: ['latin'] })
+
+export default function GANPage() {
+  const router = useRouter()
+  const [isExiting, setIsExiting] = useState(false)
+
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setIsExiting(true)
+  }
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.6, -0.05, 0.01, 0.99],
+        staggerChildren: 0.1
+      }
+    },
+    exit: { 
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.5,
+        ease: [0.6, -0.05, 0.01, 0.99],
+        staggerChildren: 0.05,
+        staggerDirection: -1
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 }
+  }
+
+  return (
+    <>
+      <SiteHeader />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="min-h-screen bg-black"
+      >
+        <AnimatePresence mode="wait" onExitComplete={() => router.back()}>
+          {!isExiting && (
+            <motion.article 
+              key="article"
+              className="container mx-auto max-w-screen-xl px-6 sm:px-4 pt-24 pb-16 md:px-6 md:pt-32 md:pb-24"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <div className="mx-auto max-w-3xl">
+                <motion.div
+                  variants={itemVariants}
+                  className="mb-8"
+                >
+                  <Button
+                    onClick={handleBack}
+                    variant="ghost"
+                    size="sm"
+                    className="text-white hover:bg-white hover:text-black transition-colors duration-200 rounded-full px-4"
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back
+                  </Button>
+                </motion.div>
+                <motion.header variants={itemVariants} className="mb-12 md:mb-16 text-center">
+                  <motion.time 
+                    variants={itemVariants}
+                    dateTime="2024-01-08" 
+                    className="block text-sm text-white/60 mb-4"
+                  >
+                    January 8, 2024
+                  </motion.time>
+                  <motion.h1 
+                    variants={itemVariants}
+                    className="text-4xl md:text-6xl font-medium text-white mb-6"
+                  >
+                    WTF are GANs?
+                  </motion.h1>
+                  <motion.p 
+                    variants={itemVariants}
+                    className="text-xl md:text-2xl text-white/90 mb-4"
+                  >
+                    The AI wizardry behind generating fake stuff that looks real AF
+                  </motion.p>
+                  <motion.div
+                    variants={itemVariants}
+                    className={`text-sm text-white/60 ${inter.className} font-medium`}
+                  >
+                    Deep Learning Explained
+                  </motion.div>
+                </motion.header>
+                <motion.div 
+                  variants={itemVariants}
+                  className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+                >
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-white text-black hover:bg-white/90 rounded-full px-8"
+                  >
+                    <Link href="#learn-more">See Examples</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="lg"
+                    className="text-white hover:bg-white/10 rounded-full px-8"
+                  >
+                    <Link href="#playground" className="flex items-center gap-2">
+                      Try it yourself
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </motion.div>
+                <motion.div 
+                  variants={itemVariants}
+                  className="prose prose-invert mx-auto px-2 sm:px-0"
+                >
+                  <p className="text-lg md:text-xl text-white/90">
+                    Imagine two AI networks locked in an epic battle: one trying to create fake stuff, the other trying to spot the fakes. That&apos;s a GAN (Generative Adversarial Network) in a nutshell. Check out more at{" "}
+                    <Link href="https://gan-explained.com" className="text-white hover:text-white/90 underline underline-offset-4">
+                      gan-explained.com
+                    </Link>
+                    .
+                  </p>
+                  <p className="text-lg md:text-xl text-white/90">
+                    The &quot;Generator&quot; is like an art forger, getting better at creating fake images, videos, or whatever you want. Meanwhile, the &quot;Discriminator&quot; is like a detective, trying to catch these fakes. As they duke it out, both get scary good at their jobs.
+                  </p>
+                  <p className="text-lg md:text-xl text-white/90">
+                    Welcome to our no-BS guide to understanding how GANs create those mind-bending deepfakes and AI art you&apos;ve been seeing everywhere.
+                  </p>
+                </motion.div>
+                <motion.div 
+                  variants={itemVariants}
+                  className="prose prose-invert mx-auto px-2 sm:px-0 mt-16"
+                >
+                  <h2 className="text-2xl font-semibold mb-4">The Battle of Generator vs Discriminator</h2>
+                  <p className="text-lg md:text-xl text-white/90 mb-4">
+                    Watch these two networks duke it out in real-time. The graph shows how the quality of generated images improves as the Generator gets better at fooling the Discriminator:
+                  </p>
+                  <AnimatedGraph />
+                  <p className="text-sm text-white/60 mt-2">
+                    Note: Higher values mean the Generator is creating more realistic fakes. Lower values mean the Discriminator is better at spotting them.
+                  </p>
+                </motion.div>
+              </div>
+            </motion.article>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </>
+  )
+}
+
+
+
+
+my-app/page.tsx:
+'use client'
+
+import { useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { HeroCarousel } from "@/components/hero-carousel"
+import { ProductCarousel } from "@/components/product-carousel"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
+
+const products = [
+  {
+    title: "Sora is here",
+    gradient: "linear-gradient(to bottom right, #9333ea, #6b21a8)",
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168819/carousel-card-images/un181eqlzwimojzu9ld3.webp",
+    link: "/products/sora"
+  },
+  {
+    title: "Introducing ChatGPT Pro",
+    gradient: "linear-gradient(to bottom right, #fbbf24, #d97706)",
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168812/carousel-card-images/x7s17hftuv6hf8k5t0c9.webp",
+    link: "/products/chatgpt-pro"
+  },
+  {
+    title: "Introduction to Perceptrons",
+    subtitle: "The Building Blocks That Sparked an AI Revolution",
+    gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736280272/carousel-card-images/urkdiyseu5i4mdttzw1s.webp",
+    link: "/products/introduction-to-perceptrons"
+  },
+  {
+    title: "WTF are GANs?",
+    subtitle: "Two Neural Networks Walk into a Bar: Understanding Generative Adversarial Networks",
+    gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736281265/carousel-card-images/yppxqo3nye9qs6i5sb65.webp",
+    link: "/products/wtf-are-gans"
+  },
+  {
+    title: "GPT-4 Turbo",
+    gradient: "linear-gradient(to bottom right, #4ade80, #16a34a)",
+    link: "/products/gpt-4-turbo"
+  },
+  {
+    title: "DALL·E 3",
+    gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
+    link: "/products/dalle-3"
+  },
+  {
+    title: "API",
+    gradient: "linear-gradient(to bottom right, #94a3b8, #475569)",
+    link: "/products/api"
+  },
+  {
+    title: "Enterprise",
+    gradient: "linear-gradient(to bottom right, #2dd4bf, #0d9488)",
+    link: "/products/enterprise"
+  }
+]
+
+const research = [
+  {
+    title: "Safety & Alignment",
+    date: "Dec 5, 2024",
+    gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
+    link: "/research/safety-alignment-dec-5"
+  },
+  {
+    title: "Safety & Alignment",
+    date: "Nov 30, 2024",
+    gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
+    link: "/research/safety-alignment-nov-30"
+  },
+  {
+    title: "Research",
+    date: "Dec 5, 2024",
+    gradient: "linear-gradient(to bottom right, #fbbf24, #d97706)",
+    link: "/research/dec-5"
+  },
+  {
+    title: "Research",
+    date: "Sep 12, 2024",
+    gradient: "linear-gradient(to bottom right, #2dd4bf, #0d9488)",
+    link: "/research/sep-12"
+  },
+  {
+    title: "Safety & Alignment",
+    date: "Aug 28, 2024",
+    gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
+    link: "/research/safety-alignment-aug-28"
+  },
+  {
+    title: "Research",
+    date: "Aug 15, 2024",
+    gradient: "linear-gradient(to bottom right, #4ade80, #16a34a)",
+    link: "/research/aug-15"
+  },
+  {
+    title: "Safety & Alignment",
+    date: "Jul 30, 2024",
+    gradient: "linear-gradient(to bottom right, #f472b6, #db2777)",
+    link: "/research/safety-alignment-jul-30"
+  },
+  {
+    title: "Research",
+    date: "Jul 15, 2024",
+    gradient: "linear-gradient(to bottom right, #94a3b8, #475569)",
+    link: "/research/jul-15"
+  }
+]
+
+export default function Home() {
+  useEffect(() => {
+    // Any client-side effects can go here
+  }, [])
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <SiteHeader />
+      <main className="min-h-screen bg-black pt-16">
+        <div className="container mx-auto px-0 py-4">
+          <HeroCarousel />
+        </div>
+        <div className="space-y-2 py-4">
+          <ProductCarousel title="Products" items={products} />
+          <ProductCarousel title="Research" items={research} />
+        </div>
+      </main>
+      <SiteFooter />
+    </motion.div>
+  )
+}
+
+
+
+components/product-carousel.tsx:
+'use client'
+
+import * as React from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel"
+import { useMemo, useCallback } from 'react'
+
+interface CarouselProps {
+  title: string
+  items: {
+    title: string
+    date?: string
+    subtitle?: string
+    background?: {
+      type: "image" | "video"
+      src: string
+      fallback?: string
+    }
+    gradient?: string
+    overlayImage?: string
+    link: string
+  }[]
+}
+
+export function ProductCarousel({ title, items }: CarouselProps) {
+  const [api, setApi] = React.useState<CarouselApi | null>(null)
+
+  const carouselOptions = useMemo(() => ({
+    align: "start" as const,
+    loop: false,
+    dragFree: false,
+    containScroll: "trimSnaps" as const,
+  }), [])
+
+  const handlePrevClick = useCallback(() => api?.scrollPrev(), [api])
+  const handleNextClick = useCallback(() => api?.scrollNext(), [api])
+
+  return (
+    <section className="py-4 md:py-8 overflow-hidden">
+      <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="mb-4 md:mb-6 flex items-center justify-between">
+          <h2 className="text-2xl md:text-4xl font-medium text-white">
+            {title}
+          </h2>
+          <div className="hidden md:flex gap-4">
+            <button
+              onClick={handlePrevClick}
+              className="rounded-full p-2 hover:bg-white/10"
+              aria-label="Previous item"
+            >
+              <ChevronLeft className="h-6 w-6 text-white" />
+            </button>
+            <button
+              onClick={handleNextClick}
+              className="rounded-full p-2 hover:bg-white/10"
+              aria-label="Next item"
+            >
+              <ChevronRight className="h-6 w-6 text-white" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="relative">
+        <Carousel
+          setApi={setApi}
+          opts={carouselOptions}
+          className="w-full"
+        >
+          <CarouselContent className="ml-0 sm:ml-6 lg:ml-8 snap-x snap-mandatory">
+            {items.map((item, index) => (
+              <CarouselItem 
+                key={index} 
+                className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start"
+              >
+                <Link href={item.link} className="block">
+                  <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md">
+                    {/* Base gradient background */}
+                    <div
+                      className="absolute inset-0 transition-transform duration-300 group-hover:scale-105"
+                      style={{ background: item.gradient }}
+                    />
+                    
+                    {/* Optional overlay image */}
+                    {item.overlayImage && (
+                      <div className="absolute inset-0 z-10">
+                        <Image
+                          src={item.overlayImage}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          priority={index === 0}
+                        />
+                        <div className="absolute inset-0 bg-black/20" />
+                      </div>
+                    )}
+
+                    {/* Content overlay */}
+                    <div className="absolute inset-0 p-4 flex flex-col justify-between z-20">
+                      {item.subtitle ? (
+                        <>
+                          <h3 className="text-lg font-medium text-white">
+                            {item.title}
+                          </h3>
+                          <p className="text-sm text-white/90 mt-auto">
+                            {item.subtitle}
+                          </p>
+                        </>
+                      ) : (
+                        <div className="mt-auto">
+                          {item.date && (
+                            <div className="text-sm text-white/80 mb-1">{item.date}</div>
+                          )}
+                          <h3 className="text-lg font-medium text-white">
+                            {item.title}
+                          </h3>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              </CarouselItem>
+            ))}
+            <CarouselItem className="pl-4 basis-[67.5%] sm:basis-[45%] md:basis-1/3 lg:basis-1/4 snap-start">
+              <Link href={`/archive/${title.toLowerCase()}`} className="block">
+                <div className="group relative aspect-[3/4] sm:aspect-[3/3.8] overflow-hidden rounded-md bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center">
+                  <div className="text-center transition-all duration-300 group-hover:scale-110">
+                    <h3 className="text-xl font-medium text-white mb-2">See All</h3>
+                    <ArrowRight className="h-6 w-6 text-white mx-auto transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </Link>
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
+      </div>
+    </section>
+  )
+}
+
+
+
+config/content.ts:
+interface BaseItem {
+  id: string
+  title: string
+  content: string
+  date: string
+  gradient: string
+}
+
+export interface Product extends BaseItem {
+  type: 'Product'
+}
+
+export interface ResearchItem extends BaseItem {
+  type: 'Research'
+}
+
+export const products: Product[] = [
+  {
+    id: "sora",
+    title: "Sora is here",
+    content: "Bring your imagination to life with Sora, our new text-to-video model",
+    date: "Dec 9, 2024",
+    gradient: "linear-gradient(to bottom right, #9333ea, #6b21a8)",
+    type: 'Product'
+  },
+  {
+    id: "chatgpt-pro",
+    title: "Introducing ChatGPT Pro",
+    content: "Get priority access, faster response times, and exclusive features",
+    date: "Dec 5, 2024",
+    gradient: "linear-gradient(to bottom right, #fbbf24, #d97706)",
+    type: 'Product'
+  },
+  {
+    id: "introduction-to-perceptrons",
+    title: "Introduction to Perceptrons",
+    content: "The Building Blocks That Sparked an AI Revolution",
+    date: "Nov 15, 2024",
+    gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
+    type: 'Product'
+  },
+  {
+    id: "wtf-are-gans",
+    title: "WTF are GANs?",
+    content: "Two Neural Networks Walk into a Bar: Understanding Generative Adversarial Networks",
+    date: "Oct 20, 2024",
+    gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
+    type: 'Product'
+  },
+  {
+    id: "gpt-4-turbo",
+    title: "GPT-4 Turbo",
+    content: "Experience the next level of language understanding and generation",
+    date: "Sep 5, 2024",
+    gradient: "linear-gradient(to bottom right, #4ade80, #16a34a)",
+    type: 'Product'
+  },
+  {
+    id: "dalle-3",
+    title: "DALL·E 3",
+    content: "Create stunning images with our most advanced image generation model",
+    date: "Aug 1, 2024",
+    gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
+    type: 'Product'
+  },
+  {
+    id: "api",
+    title: "API",
+    content: "Integrate OpenAI's powerful models into your applications",
+    date: "Jul 10, 2024",
+    gradient: "linear-gradient(to bottom right, #94a3b8, #475569)",
+    type: 'Product'
+  },
+  {
+    id: "enterprise",
+    title: "Enterprise",
+    content: "Tailored AI solutions for your business needs",
+    date: "Jun 1, 2024",
+    gradient: "linear-gradient(to bottom right, #2dd4bf, #0d9488)",
+    type: 'Product'
+  }
+]
+
+export const research: ResearchItem[] = [
+  {
+    id: "safety-alignment-1",
+    title: "Safety & Alignment",
+    content: "Our latest research on AI safety and alignment",
+    date: "Dec 5, 2024",
+    gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
+    type: 'Research'
+  },
+  {
+    id: "video-models",
+    title: "Video generation models as world simulators",
+    content: "Understanding how video models simulate physical worlds",
+    date: "Feb 15, 2024",
+    gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
+    type: 'Research'
+  },
+  {
+    id: "safety-alignment-2",
+    title: "Safety & Alignment",
+    content: "Advancements in ensuring AI systems align with human values",
+    date: "Nov 30, 2024",
+    gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
+    type: 'Research'
+  },
+  {
+    id: "research-1",
+    title: "Research",
+    content: "Exploring the frontiers of artificial intelligence",
+    date: "Dec 5, 2024",
+    gradient: "linear-gradient(to bottom right, #fbbf24, #d97706)",
+    type: 'Research'
+  },
+  {
+    id: "research-2",
+    title: "Research",
+    content: "Breakthroughs in natural language processing and understanding",
+    date: "Sep 12, 2024",
+    gradient: "linear-gradient(to bottom right, #2dd4bf, #0d9488)",
+    type: 'Research'
+  },
+  {
+    id: "safety-alignment-3",
+    title: "Safety & Alignment",
+    content: "Developing robust and reliable AI systems",
+    date: "Aug 28, 2024",
+    gradient: "linear-gradient(to bottom right, #4ade80, #16a34a)",
+    type: 'Research'
+  },
+  {
+    id: "research-3",
+    title: "Research",
+    content: "Advancements in multimodal learning and generation",
+    date: "Aug 15, 2024",
+    gradient: "linear-gradient(to bottom right, #94a3b8, #475569)",
+    type: 'Research'
+  },
+  {
+    id: "safety-alignment-4",
+    title: "Safety & Alignment",
+    content: "Ethical considerations in AI development and deployment",
+    date: "Jul 30, 2024",
+    gradient: "linear-gradient(to bottom right, #f472b6, #db2777)",
+    type: 'Research'
+  }
+]
+
+export type ContentItem = Product | ResearchItem
+export const allContent: ContentItem[] = [...products, ...research]
+

@@ -21,15 +21,18 @@ const products = [
     link: "/products/chatgpt-pro"
   },
   {
-    title: "Introducing ChatGPT search",
+    title: "Introduction to Perceptrons",
+    subtitle: "The Building Blocks That Sparked an AI Revolution",
     gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
-    link: "/products/chatgpt-search"
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736280272/carousel-card-images/urkdiyseu5i4mdttzw1s.webp",
+    link: "/products/introduction-to-perceptrons"
   },
   {
-    title: "Introducing canvas",
-    subtitle: "A new way to write and code with ChatGPT",
+    title: "WTF are GANs?",
+    subtitle: "Two Neural Networks Walk into a Bar: Understanding Generative Adversarial Networks",
     gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
-    link: "/products/canvas"
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736281265/carousel-card-images/yppxqo3nye9qs6i5sb65.webp",
+    link: "/products/wtf-are-gans"
   },
   {
     title: "GPT-4 Turbo",

@@ -17,6 +17,7 @@ interface CarouselProps {
   items: {
     title: string
     date?: string
+    subtitle?: string
     background?: {
       type: "image" | "video"
       src: string
@@ -102,13 +103,26 @@ export function ProductCarousel({ title, items }: CarouselProps) {
                     )}
 
                     {/* Content overlay */}
-                    <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent z-20">
-                      {item.date && (
-                        <div className="mb-1 text-sm text-white/80">{item.date}</div>
+                    <div className="absolute inset-0 p-4 flex flex-col justify-between z-20">
+                      {item.subtitle ? (
+                        <>
+                          <h3 className="text-lg font-medium text-white">
+                            {item.title}
+                          </h3>
+                          <p className="text-sm text-white/90 mt-auto">
+                            {item.subtitle}
+                          </p>
+                        </>
+                      ) : (
+                        <div className="mt-auto">
+                          {item.date && (
+                            <div className="text-sm text-white/80 mb-1">{item.date}</div>
+                          )}
+                          <h3 className="text-lg font-medium text-white">
+                            {item.title}
+                          </h3>
+                        </div>
                       )}
-                      <h3 className="text-lg font-medium text-white">
-                        {item.title}
-                      </h3>
                     </div>
                   </div>
                 </Link>
