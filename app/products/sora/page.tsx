@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { SiteHeader } from "@/components/site-header"
 import { useState } from 'react'
 import { Inter } from 'next/font/google'
+import { AnimatedGraph } from "@/components/animated-graph"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -160,6 +161,22 @@ export default function SoraPage() {
                     We&apos;re releasing it today as a standalone product at Sora.com to ChatGPT Plus and Pro users.
                   </p>
                 </motion.div>
+                <motion.div 
+                  variants={itemVariants}
+                  className="prose prose-invert mx-auto px-2 sm:px-0 mt-16"
+                >
+                  <h2 className="text-2xl font-semibold mb-4">Sora Performance Metrics</h2>
+                  <p className="text-lg md:text-xl text-white/90 mb-4">
+                    Our latest metrics show significant improvements in Sora&apos;s performance across various benchmarks.
+                    The graph below illustrates the progress we&apos;ve made over the past six months in terms of video quality,
+                    generation speed, and model efficiency:
+                  </p>
+                  <AnimatedGraph />
+                  <p className="text-sm text-white/60 mt-2">
+                    Note: The values represent a composite score of video quality, generation speed, and model efficiency.
+                    Higher values indicate better overall performance.
+                  </p>
+                </motion.div>
               </div>
             </motion.article>
           )}
@@ -168,3 +185,4 @@ export default function SoraPage() {
     </>
   )
 }
+

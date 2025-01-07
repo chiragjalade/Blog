@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react'
 
 interface OptimizedImageProps extends Omit<ImageProps, 'onLoad'> {
   aboveTheFold?: boolean
+  alt: string // Make alt prop required
 }
 
-export function OptimizedImage({ aboveTheFold = false, ...props }: OptimizedImageProps) {
+export function OptimizedImage({ aboveTheFold = false, alt, ...props }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
@@ -19,6 +20,7 @@ export function OptimizedImage({ aboveTheFold = false, ...props }: OptimizedImag
   return (
     <Image
       {...props}
+      alt={alt} // Pass the alt prop to the Image component
       priority={aboveTheFold}
       loading={aboveTheFold ? 'eager' : 'lazy'}
       onLoad={() => setIsLoaded(true)}
