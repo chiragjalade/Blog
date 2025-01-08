@@ -50,7 +50,7 @@ export const products: Product[] = [
     date: "Oct 20, 2024",
     gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
     type: 'Product',
-    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736281265/carousel-card-images/yppxqo3nye9qs6i5sb65.webp",
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736302735/carousel-card-images/l3odbygb63esnonacoev.webp",
   },
   {
     id: "gpt-4-turbo",

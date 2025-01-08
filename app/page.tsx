@@ -31,7 +31,7 @@ const products = [
     title: "WTF are GANs?",
     subtitle: "Two Neural Networks Walk into a Bar: Understanding Generative Adversarial Networks",
     gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
-    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736281265/carousel-card-images/yppxqo3nye9qs6i5sb65.webp",
+    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736302735/carousel-card-images/l3odbygb63esnonacoev.webp",
     link: "/products/wtf-are-gans"
   },
   {
