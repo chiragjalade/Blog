@@ -490,7 +490,7 @@ export function PerceptronDiagram({ initialInputs = 3, className = '' }: Percept
               >
                 <motion.div
                   data-node={node.id}
-                  className={`w-12 h-12 md:w-12 md:h-12 rounded-full ${node.color} flex items-center justify-center text-base md:text-lg font-medium shadow-lg text-black ${unselectable}`}
+                  className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${node.color} flex items-center justify-center text-sm md:text-lg font-medium shadow-lg text-black ${unselectable}`}
                   animate={longPressedNode === node.id ? wiggleAnimation : { scale: 1, opacity: 1 }}
                 >
                   {node.label}
@@ -530,7 +530,7 @@ export function PerceptronDiagram({ initialInputs = 3, className = '' }: Percept
             <motion.div
               key={node.id}
               data-node={node.id}
-              className={`w-12 h-12 md:w-12 md:h-12 rounded-full ${node.color} flex items-center justify-center text-base md:text-lg font-medium shadow-lg text-black ${unselectable}`}
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${node.color} flex items-center justify-center text-sm md:text-lg font-medium shadow-lg text-black ${unselectable}`}
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
@@ -545,7 +545,7 @@ export function PerceptronDiagram({ initialInputs = 3, className = '' }: Percept
             <motion.div
               key={node.id}
               data-node={node.id}
-              className={`w-12 h-12 md:w-12 md:h-12 rounded-full ${node.color} flex items-center justify-center text-base md:text-lg font-medium shadow-lg text-black ${unselectable}`}
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${node.color} flex items-center justify-center text-sm md:text-lg font-medium shadow-lg text-black ${unselectable}`}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
