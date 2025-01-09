@@ -161,7 +161,7 @@ export default function PerceptronPage() {
                   <p className="text-lg md:text-xl text-white/90 mb-8">
                     The diagram below shows how inputs are weighted and combined to produce an output:
                   </p>
-                  <div className="w-full bg-black/50 rounded-xl p-8 mb-8">
+                  <div className="w-full bg-black/50 rounded-xl p-2 mb-8">
                     <PerceptronDiagram />
                   </div>
                   <p className="text-sm text-white/60 mt-2">
