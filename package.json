@@ -22,11 +22,11 @@
     "next": "14.2.16",
     "react": "^18",
     "react-dom": "^18",
-    "react-intersection-observer": "^9.8.0",
-    "recharts": "^2.15.0",
     "sharp": "^0.33.5",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "recharts": "^2.12.0",
+    "react-intersection-observer": "^9.8.0"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -40,3 +40,4 @@
     "typescript": "^5"
   }
 }
+

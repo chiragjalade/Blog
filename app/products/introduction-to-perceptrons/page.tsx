@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { SiteHeader } from "@/components/site-header"
 import { useState } from 'react'
 import { Inter } from 'next/font/google'
-import { AnimatedGraph } from "@/components/animated-graph"
+import { PerceptronDiagram } from "./perceptron-diagram-component/perceptron-diagram"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -157,15 +157,16 @@ export default function PerceptronPage() {
                   variants={itemVariants}
                   className="prose prose-invert mx-auto px-2 sm:px-0 mt-16"
                 >
-                  <h2 className="text-2xl font-semibold mb-4">Learning Curve Visualization</h2>
-                  <p className="text-lg md:text-xl text-white/90 mb-4">
-                    Watch how a perceptron learns to classify data points over multiple iterations.
-                    The graph below shows the accuracy improvement during the training process:
+                  <h2 className="text-2xl font-semibold mb-4">Perceptron Architecture</h2>
+                  <p className="text-lg md:text-xl text-white/90 mb-8">
+                    The diagram below shows how inputs are weighted and combined to produce an output:
                   </p>
-                  <AnimatedGraph />
+                  <div className="w-full bg-black/50 rounded-xl p-8 mb-8">
+                    <PerceptronDiagram />
+                  </div>
                   <p className="text-sm text-white/60 mt-2">
-                    Note: The values represent the classification accuracy over training epochs.
-                    Higher values indicate better performance on the training dataset.
+                    Note: The perceptron takes multiple inputs (x₁, x₂, ..., xₘ) and a bias term, combines them using weights, 
+                    applies a non-linear activation function (ƒ), and produces an output (ŷ).
                   </p>
                 </motion.div>
               </div>
@@ -176,3 +177,4 @@ export default function PerceptronPage() {
     </>
   )
 }
+
