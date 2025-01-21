@@ -533,5 +533,6 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
       </div>
     </div>
   )
+
 }
 
