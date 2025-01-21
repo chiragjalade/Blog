@@ -8,11 +8,11 @@ interface BaseItem {
 }
 
 export interface Product extends BaseItem {
-  type: 'Product'
+  type: "Product"
 }
 
 export interface ResearchItem extends BaseItem {
-  type: 'Research'
+  type: "Research"
 }
 
 export const products: Product[] = [
@@ -22,8 +22,9 @@ export const products: Product[] = [
     content: "Bring your imagination to life with Sora, our new text-to-video model",
     date: "Dec 9, 2024",
     gradient: "linear-gradient(to bottom right, #9333ea, #6b21a8)",
-    type: 'Product',
-    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168819/carousel-card-images/un181eqlzwimojzu9ld3.webp"
+    type: "Product",
+    overlayImage:
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168819/carousel-card-images/un181eqlzwimojzu9ld3.webp",
   },
   {
     id: "chatgpt-pro",
@@ -31,8 +32,9 @@ export const products: Product[] = [
     content: "Get priority access, faster response times, and exclusive features",
     date: "Dec 5, 2024",
     gradient: "linear-gradient(to bottom right, #fbbf24, #d97706)",
-    type: 'Product',
-    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168812/carousel-card-images/x7s17hftuv6hf8k5t0c9.webp"
+    type: "Product",
+    overlayImage:
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1736168812/carousel-card-images/x7s17hftuv6hf8k5t0c9.webp",
   },
   {
     id: "introduction-to-perceptrons",
@@ -40,8 +42,9 @@ export const products: Product[] = [
     content: "The Building Blocks That Sparked an AI Revolution",
     date: "Nov 15, 2024",
     gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
-    type: 'Product',
-    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736280272/carousel-card-images/urkdiyseu5i4mdttzw1s.webp",
+    type: "Product",
+    overlayImage:
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1736447755/carousel-card-images/a5i57ntvybvdxo8jgoov.webp",
   },
   {
     id: "wtf-are-gans",
@@ -49,24 +52,29 @@ export const products: Product[] = [
     content: "Two Neural Networks Walk into a Bar: Understanding Generative Adversarial Networks",
     date: "Oct 20, 2024",
     gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
-    type: 'Product',
-    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736302735/carousel-card-images/l3odbygb63esnonacoev.webp",
+    type: "Product",
+    overlayImage:
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1736302735/carousel-card-images/l3odbygb63esnonacoev.webp",
   },
   {
-    id: "gpt-4-turbo",
-    title: "GPT-4 Turbo",
-    content: "Experience the next level of language understanding and generation",
+    id: "demystifying-mlps",
+    title: "Demystifying MLPs",
+    content: "Understanding the Building Blocks of Modern Machine Intelligence",
     date: "Sep 5, 2024",
     gradient: "linear-gradient(to bottom right, #4ade80, #16a34a)",
-    type: 'Product'
+    type: "Product",
+    overlayImage:
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1736426196/carousel-card-images/t3ryi5m4dsji09gyvagg.webp",
   },
   {
-    id: "dalle-3",
-    title: "DALL·E 3",
-    content: "Create stunning images with our most advanced image generation model",
-    date: "Aug 1, 2024",
+    id: "universal-approximation-theorem",
+    title: "Universal Approximation Theorem",
+    content: "The Theoretical Foundation of Neural Networks' Power",
+    date: "Jul 15, 2024",
     gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
-    type: 'Product'
+    type: "Product",
+    overlayImage:
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1736426196/carousel-card-images/t3ryi5m4dsji09gyvagg.webp",
   },
   {
     id: "api",
@@ -74,7 +82,7 @@ export const products: Product[] = [
     content: "Integrate OpenAI's powerful models into your applications",
     date: "Jul 10, 2024",
     gradient: "linear-gradient(to bottom right, #94a3b8, #475569)",
-    type: 'Product'
+    type: "Product",
   },
   {
     id: "enterprise",
@@ -82,8 +90,8 @@ export const products: Product[] = [
     content: "Tailored AI solutions for your business needs",
     date: "Jun 1, 2024",
     gradient: "linear-gradient(to bottom right, #2dd4bf, #0d9488)",
-    type: 'Product'
-  }
+    type: "Product",
+  },
 ]
 
 export const research: ResearchItem[] = [
@@ -93,7 +101,7 @@ export const research: ResearchItem[] = [
     content: "Our latest research on AI safety and alignment",
     date: "Dec 5, 2024",
     gradient: "linear-gradient(to bottom right, #f87171, #dc2626)",
-    type: 'Research'
+    type: "Research",
   },
   {
     id: "video-models",
@@ -101,8 +109,9 @@ export const research: ResearchItem[] = [
     content: "Understanding how video models simulate physical worlds",
     date: "Feb 15, 2024",
     gradient: "linear-gradient(to bottom right, #60a5fa, #3b82f6)",
-    type: 'Research',
-    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736280272/carousel-card-images/urkdiyseu5i4mdttzw1s.webp"
+    type: "Research",
+    overlayImage:
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1736280272/carousel-card-images/urkdiyseu5i4mdttzw1s.webp",
   },
   {
     id: "safety-alignment-2",
@@ -110,8 +119,9 @@ export const research: ResearchItem[] = [
     content: "Advancements in ensuring AI systems align with human values",
     date: "Nov 30, 2024",
     gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
-    type: 'Research',
-    overlayImage: "https://res.cloudinary.com/ddpumiekp/image/upload/v1736281265/carousel-card-images/yppxqo3nye9qs6i5sb65.webp"
+    type: "Research",
+    overlayImage:
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1736281265/carousel-card-images/yppxqo3nye9qs6i5sb65.webp",
   },
   {
     id: "research-1",
@@ -119,7 +129,7 @@ export const research: ResearchItem[] = [
     content: "Exploring the frontiers of artificial intelligence",
     date: "Dec 5, 2024",
     gradient: "linear-gradient(to bottom right, #fbbf24, #d97706)",
-    type: 'Research'
+    type: "Research",
   },
   {
     id: "research-2",
@@ -127,7 +137,7 @@ export const research: ResearchItem[] = [
     content: "Breakthroughs in natural language processing and understanding",
     date: "Sep 12, 2024",
     gradient: "linear-gradient(to bottom right, #2dd4bf, #0d9488)",
-    type: 'Research'
+    type: "Research",
   },
   {
     id: "safety-alignment-3",
@@ -135,7 +145,7 @@ export const research: ResearchItem[] = [
     content: "Developing robust and reliable AI systems",
     date: "Aug 28, 2024",
     gradient: "linear-gradient(to bottom right, #4ade80, #16a34a)",
-    type: 'Research'
+    type: "Research",
   },
   {
     id: "research-3",
@@ -143,7 +153,7 @@ export const research: ResearchItem[] = [
     content: "Advancements in multimodal learning and generation",
     date: "Aug 15, 2024",
     gradient: "linear-gradient(to bottom right, #94a3b8, #475569)",
-    type: 'Research'
+    type: "Research",
   },
   {
     id: "safety-alignment-4",
@@ -151,8 +161,8 @@ export const research: ResearchItem[] = [
     content: "Ethical considerations in AI development and deployment",
     date: "Jul 30, 2024",
     gradient: "linear-gradient(to bottom right, #f472b6, #db2777)",
-    type: 'Research'
-  }
+    type: "Research",
+  },
 ]
 
 export type ContentItem = Product | ResearchItem
