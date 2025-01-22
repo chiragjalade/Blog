@@ -51,7 +51,7 @@ const products = [
     subtitle: "The Theoretical Foundation of Neural Networks' Power",
     gradient: "linear-gradient(to bottom right, #c084fc, #9333ea)",
     overlayImage:
-      "https://res.cloudinary.com/ddpumiekp/image/upload/v1737465871/chirag0912_A_breathtakingly_detailed_mountain_landscape_unfol_cf16adae-e1ef-4d9f-bd7c-e57b2a5bbcec_2_slg2g0.png",
+      "https://res.cloudinary.com/ddpumiekp/image/upload/v1737468588/chirag0912_A_breathtakingly_detailed_mountain_landscape_unfol_cf16adae-e1ef-4d9f-bd7c-e57b2a5bbcec_2_xs7ysf.webp",
     link: "/products/universal-approximation-theorem",
   },
   {
@@ -146,4 +146,3 @@ export default function Home() {
     </motion.div>
   )
 }
-
