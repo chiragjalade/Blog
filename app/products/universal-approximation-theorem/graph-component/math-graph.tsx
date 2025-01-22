@@ -1,27 +1,27 @@
 "use client"
 
-import { motion, useAnimation, cubicBezier } from "framer-motion"
+import { motion, useAnimation } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { Input } from "@/components/ui/input"
 import { parseAndEvaluate, calculateRange } from "./math-utils"
 import { RefreshCw } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface MathGraphProps {
   className?: string
 }
 
-// Change from named export to default export
 export default function MathGraph({ className = "" }: MathGraphProps) {
   const { ref, inView } = useInView({
     threshold: 0.5,
     triggerOnce: true,
   })
-
+  const [isLoading, setIsLoading] = useState(true)
   const [dimensions, setDimensions] = useState({ width: 600, height: 400 })
   const containerRef = useRef<HTMLDivElement>(null)
   const [equation, setEquation] = useState("x^3 - 3*x^2 + 2*x + 5")
-  const [debouncedEquation, setDebouncedEquation] = useState(equation) // Added debouncedEquation state
+  const [debouncedEquation, setDebouncedEquation] = useState(equation)
   const [ranges, setRanges] = useState({ xRange: [-10, 10], yRange: [-10, 10] })
   const [xInterval, setXInterval] = useState({
     min: -6,
@@ -52,25 +52,28 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
   const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
-    if (typeof window === "undefined") return
+    const timer = setTimeout(() => setIsLoading(false), 100)
+    return () => clearTimeout(timer)
+  }, [])
 
-    const updateDimensions = () => {
-      const isMobile = typeof window !== "undefined" && window.innerWidth < 640
-      if (isMobile) {
-        const width = window.innerWidth - 32 // Account for padding
-        const height = Math.min(window.innerHeight * 0.6, width * 1.2) // Maintain aspect ratio
-        setDimensions({ width, height })
-      } else {
-        const width = Math.min(600, window.innerWidth - 40)
-        const height = Math.max((width * 2) / 3, 300)
-        setDimensions({ width, height })
-      }
+  const updateDimensions = useCallback(() => {
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 640
+    if (isMobile) {
+      const width = window.innerWidth - 32
+      const height = Math.min(window.innerHeight * 0.6, width * 1.2)
+      setDimensions({ width, height })
+    } else {
+      const width = Math.min(600, window.innerWidth - 40)
+      const height = Math.max((width * 2) / 3, 300)
+      setDimensions({ width, height })
     }
+  }, [])
 
+  useEffect(() => {
     updateDimensions()
     window.addEventListener("resize", updateDimensions)
     return () => window.removeEventListener("resize", updateDimensions)
-  }, [])
+  }, [updateDimensions])
 
   useEffect(() => {
     if (containerRef.current) {
@@ -88,15 +91,14 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
     const step = (xMax - xMin) / 200
 
     try {
-      // Validate equation first
-      const testPoint = parseAndEvaluate(debouncedEquation, xMin) // Use debouncedEquation
+      const testPoint = parseAndEvaluate(debouncedEquation, xMin)
       if (typeof testPoint !== "number" || isNaN(testPoint)) {
-        return points // Return empty array if equation is invalid
+        return points
       }
 
       for (let x = xMin; x <= xMax; x += step) {
         try {
-          const y = parseAndEvaluate(debouncedEquation, x) // Use debouncedEquation
+          const y = parseAndEvaluate(debouncedEquation, x)
           if (typeof y === "number" && !isNaN(y)) {
             points.push([x, y])
           }
@@ -109,7 +111,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
     }
 
     return points
-  }, [debouncedEquation, ranges.xRange]) // Updated dependency
+  }, [debouncedEquation, ranges.xRange])
 
   const scalePoint = useCallback(
     (point: number[], width: number, height: number) => {
@@ -129,7 +131,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
   const generatePath = useCallback(
     (width: number, height: number) => {
       const points = generatePoints()
-      if (points.length === 0) return "" // Return empty path if no valid points
+      if (points.length === 0) return ""
 
       const scaledPoints = points.map((point) => scalePoint(point, width, height))
       return (
@@ -204,7 +206,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
           <text
             key={`x-label-${x}`}
             x={scaledX}
-            y={height + (isMobile ? 25 : 25)} // Updated y position for x-axis labels on mobile
+            y={height + (isMobile ? 25 : 25)}
             textAnchor="middle"
             className="text-[11px] sm:text-xs fill-white/60"
           >
@@ -219,7 +221,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
         labels.push(
           <text
             key={`y-label-${y}`}
-            x={isMobile ? -20 : -16} // Increased spacing from axis
+            x={isMobile ? -25 : -20}
             y={scaledY}
             textAnchor="end"
             dominantBaseline="middle"
@@ -237,7 +239,6 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Added setTimeout for debouncing
       try {
         const points = generatePoints()
         setHasError(points.length === 0)
@@ -250,7 +251,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
         console.error("Error processing equation:", error)
         setHasError(true)
       }
-    }, 300) // Add small delay to allow for typing
+    }, 300)
 
     return () => clearTimeout(timer)
   }, [equation, generatePoints, xInterval.min, xInterval.max, yInterval.min, yInterval.max])
@@ -280,16 +281,20 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
       setDebouncedEquation(equation)
     }, 300)
     return () => clearTimeout(timer)
-  }, [equation]) // Added debounced equation useEffect
+  }, [equation])
 
   const margin = {
     top: typeof window !== "undefined" && window.innerWidth < 640 ? 40 : 40,
     right: typeof window !== "undefined" && window.innerWidth < 640 ? 30 : 40,
     bottom: typeof window !== "undefined" && window.innerWidth < 640 ? 70 : 60,
-    left: typeof window !== "undefined" && window.innerWidth < 640 ? 60 : 80, // Increased from 45/60 to 60/80
+    left: typeof window !== "undefined" && window.innerWidth < 640 ? 45 : 60,
   }
   const innerWidth = dimensions.width - margin.left - margin.right
   const innerHeight = dimensions.height - margin.top - margin.bottom
+
+  if (isLoading) {
+    return <Skeleton className="w-full h-[400px] rounded-xl" />
+  }
 
   return (
     <div ref={ref} className={`w-full overflow-hidden ${className}`}>
@@ -319,7 +324,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
                 setXInterval({ ...xInterval, min: value })
               }}
               placeholder="X Min"
-              className="w-full pr-8 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-full pr-8"
             />
             <button
               onClick={() => setXInterval({ ...xInterval, min: initialValues.xMin })}
@@ -337,7 +342,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
                 setXInterval({ ...xInterval, max: value })
               }}
               placeholder="X Max"
-              className="w-full pr-8 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-full pr-8"
             />
             <button
               onClick={() => setXInterval({ ...xInterval, max: initialValues.xMax })}
@@ -355,7 +360,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
                 setXInterval({ ...xInterval, step: value })
               }}
               placeholder="X Step"
-              className="w-full pr-8 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-full pr-8"
             />
             <button
               onClick={() => setXInterval({ ...xInterval, step: initialValues.xStep })}
@@ -375,7 +380,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
                 setYInterval({ ...yInterval, min: value })
               }}
               placeholder="Y Min"
-              className="w-full pr-8 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-full pr-8"
             />
             <button
               onClick={() => setYInterval({ ...yInterval, min: initialValues.yMin })}
@@ -393,7 +398,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
                 setYInterval({ ...yInterval, max: value })
               }}
               placeholder="Y Max"
-              className="w-full pr-8 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-full pr-8"
             />
             <button
               onClick={() => setYInterval({ ...yInterval, max: initialValues.yMax })}
@@ -411,7 +416,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
                 setYInterval({ ...yInterval, step: value })
               }}
               placeholder="Y Step"
-              className="w-full pr-8 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-full pr-8"
             />
             <button
               onClick={() => setYInterval({ ...yInterval, step: initialValues.yStep })}
@@ -425,7 +430,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
       <div
         className="relative w-full mx-auto"
         style={{
-          paddingBottom: typeof window !== "undefined" && window.innerWidth < 640 ? "130%" : "66.67%", // Updated padding-bottom for mobile
+          paddingBottom: typeof window !== "undefined" && window.innerWidth < 640 ? "130%" : "66.67%",
           maxHeight: typeof window !== "undefined" && window.innerWidth < 640 ? "none" : "calc(100vh - 300px)",
         }}
       >
@@ -468,18 +473,18 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
               {generateGridLines(innerWidth, innerHeight)}
 
               <line
-                x1={innerWidth * ((0 - xInterval.min) / (xInterval.max - xInterval.min))}
-                y1={0}
-                x2={innerWidth * ((0 - xInterval.min) / (xInterval.max - xInterval.min))}
-                y2={innerHeight}
-                stroke="white"
-                strokeWidth="2"
-              />
-              <line
                 x1={0}
                 y1={innerHeight * (1 - -yInterval.min / (yInterval.max - yInterval.min))}
                 x2={innerWidth}
                 y2={innerHeight * (1 - -yInterval.min / (yInterval.max - yInterval.min))}
+                stroke="white"
+                strokeWidth="2"
+              />
+              <line
+                x1={innerWidth * (-ranges.xRange[0] / (ranges.xRange[1] - ranges.xRange[0]))}
+                y1={0}
+                x2={innerWidth * (-ranges.xRange[0] / (ranges.xRange[1] - ranges.xRange[0]))}
+                y2={innerHeight}
                 stroke="white"
                 strokeWidth="2"
               />
@@ -494,7 +499,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
                 x
               </text>
               <text
-                x={innerWidth * ((0 - xInterval.min) / (xInterval.max - xInterval.min))}
+                x={innerWidth * (-ranges.xRange[0] / (ranges.xRange[1] - ranges.xRange[0]))}
                 y={-10}
                 className="text-sm font-medium fill-white"
                 textAnchor="middle"
@@ -503,7 +508,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
               </text>
 
               <motion.path
-                key={equation} // Added key prop for re-animation
+                key={equation}
                 d={generatePath(innerWidth, innerHeight)}
                 stroke="url(#curveGradient)"
                 strokeWidth="2.5"
@@ -514,7 +519,7 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
                 initial={{ pathLength: 0, opacity: hasError ? 0 : 1 }}
                 animate={{ pathLength: inView && !hasError ? 1 : 0, opacity: hasError ? 0 : 1 }}
                 transition={{
-                  pathLength: { duration: 2, ease: "easeInOut" }, // Reduced duration for better responsiveness
+                  pathLength: { duration: 2, ease: "easeInOut" },
                   opacity: { duration: 0.3 },
                 }}
               />
@@ -533,6 +538,5 @@ export default function MathGraph({ className = "" }: MathGraphProps) {
       </div>
     </div>
   )
-
 }
 

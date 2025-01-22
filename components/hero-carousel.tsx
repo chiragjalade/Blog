@@ -22,8 +22,8 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823236/lzin8boldj9y0lwkr2c6.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945674/hero-carousel-preload-images/jwqdqj2hr0yqkukocaa3.png",
-      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945674/hero-carousel-preload-images/jwqdqj2hr0yqkukocaa3.png",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1737471868/jwqdqj2hr0yqkukocaa3_bmh4gh.webp",
+      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1737471868/jwqdqj2hr0yqkukocaa3_bmh4gh.webp",
     },
     link: "/sora",
   },
@@ -34,8 +34,8 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823235/j00jvvlp7qbup2ssn0kp.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945787/hero-carousel-preload-images/a1jqcdhp5qxlirqdoks1.png",
-      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945787/hero-carousel-preload-images/a1jqcdhp5qxlirqdoks1.png",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1737471870/a1jqcdhp5qxlirqdoks1_dqg6xp.webp",
+      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1737471870/a1jqcdhp5qxlirqdoks1_dqg6xp.webp",
     },
     link: "/chatgpt",
   },
@@ -46,8 +46,8 @@ const heroItems = [
     background: {
       type: "video",
       src: "https://res.cloudinary.com/ddpumiekp/video/upload/v1735823685/udrlrpx0hq4sl3hmon21.webm",
-      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945879/hero-carousel-preload-images/lrwbj2hk1vfrna0dngau.png",
-      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1735945879/hero-carousel-preload-images/lrwbj2hk1vfrna0dngau.png",
+      poster: "https://res.cloudinary.com/ddpumiekp/image/upload/v1737471872/lrwbj2hk1vfrna0dngau_1_hk4qi2.webp",
+      fallback: "https://res.cloudinary.com/ddpumiekp/image/upload/v1737471872/lrwbj2hk1vfrna0dngau_1_hk4qi2.webp",
     },
     link: "/dalle",
   },

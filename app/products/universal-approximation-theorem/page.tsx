@@ -9,9 +9,14 @@ import { SiteHeader } from "@/components/site-header"
 import { useState } from "react"
 import { Inter } from "next/font/google"
 import dynamic from "next/dynamic"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Suspense } from "react"
 
 // Update the dynamic import to use a default import
-const MathGraph = dynamic(() => import("./graph-component/math-graph"), { ssr: false }) as any // Add type assertion to resolve type issues
+const MathGraph = dynamic(() => import("./graph-component/math-graph"), {
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[400px] rounded-xl" />,
+}) as any // Add type assertion to resolve type issues
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -129,7 +134,9 @@ export default function UniversalApproximationTheoremPage() {
                   </p>
                   <motion.div variants={itemVariants} className="mt-12 mb-8 w-full mx-auto">
                     <div className="bg-black/50 rounded-xl p-4 sm:p-6 overflow-hidden">
-                      <MathGraph />
+                      <Suspense fallback={<Skeleton className="w-full h-[400px] rounded-xl" />}>
+                        <MathGraph />
+                      </Suspense>
                     </div>
                     <p className="text-sm text-white/60 text-center mt-4">
                       Figure 1: Example of a continuous function that can be approximated by a neural network
